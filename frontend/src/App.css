@@ -1,0 +1,161 @@
+/* 전역 설정 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 메인 컨텐츠 영역 */
+.main-content {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 2rem 3rem 2rem;
+  width: 100%;
+}
+
+/* 버튼 스타일 */
+.btn {
+  display: inline-block;
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: #4c1d95;
+  border: 2px solid #4c1d95;
+}
+
+.btn-secondary:hover {
+  background: #4c1d95;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* 카드 스타일 */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4c1d95;
+  margin-bottom: 1rem;
+}
+
+.card-content {
+  color: #555;
+  line-height: 1.8;
+}
+
+/* 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .navbar-logo {
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-logo h1 {
+    font-size: 1.5rem;
+  }
+
+  .nav-links {
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-links li a {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .home {
+    padding: 2rem 1.5rem;
+  }
+
+  .home h1 {
+    font-size: 2rem;
+  }
+
+  .home p {
+    font-size: 1rem;
+  }
+
+  .main-content {
+    padding: 1.5rem 1.5rem 2rem 1.5rem;
+  }
+}
+
+/* 포커스 스타일 */
+a:focus, button:focus {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
+}
+
+/* 선택 스타일 */
+::selection {
+  background: #7c3aed;
+  color: white;
+}
