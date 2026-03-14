@@ -2,6 +2,7 @@ package com.bindglam.agora.post;
 
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.registry.BuiltInRegistries;
+import com.bindglam.agora.utils.Identified;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jspecify.annotations.NonNull;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post {
+public final class Post implements Identified {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Builder.Default
@@ -30,6 +31,11 @@ public class Post {
     private String boardId;
 
     private LocalDateTime createdAt;
+
+    @Override
+    public @NonNull String id() {
+        return String.valueOf(id);
+    }
 
     public @NonNull Board getBoard() {
         return BuiltInRegistries.BOARDS.getOrThrow(boardId);
