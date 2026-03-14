@@ -21,11 +21,11 @@ public final class BoardController {
     private final PostService postService;
 
     @GetMapping(value = "/posts/{boardId}")
-    public ResponseEntity<List<PostDTO>> getPost(@PathVariable String boardId) {
+    public ResponseEntity<List<Long>> getPost(@PathVariable String boardId) {
         Optional<Board> optional = BuiltInRegistries.BOARDS.get(boardId);
         if(optional.isPresent()) {
             Board board = optional.get();
-            return ResponseEntity.ok(postService.getPostsByBoardId(board.id()));
+            return ResponseEntity.ok(postService.getPostsByBoardId(board.id()).stream().map(PostDTO::getId).toList());
         } else {
             return ResponseEntity.notFound().build();
         }
