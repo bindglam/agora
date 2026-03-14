@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/post-api")
 @RequiredArgsConstructor
-public class PostController {
+public final class PostController {
     private final PostService postService;
 
     @GetMapping(value = "/post/{postId}")
