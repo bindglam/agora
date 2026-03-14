@@ -1,11 +1,9 @@
 package com.bindglam.agora.post;
 
-import com.bindglam.agora.utils.Identified;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
 
@@ -13,20 +11,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public final class PostDTO implements Identified {
+public final class PostDTO implements Post {
     private Long id;
     private String title;
     private String content;
     private String boardId;
     private LocalDateTime createdAt;
 
-    @Override
-    public @NonNull String id() {
-        return String.valueOf(id);
-    }
-
-    public Post toEntity() {
-        return Post.builder()
+    public PostEntity toEntity() {
+        return PostEntity.builder()
                 .id(id)
                 .title(title)
                 .content(content)

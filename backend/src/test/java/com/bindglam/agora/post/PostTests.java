@@ -15,14 +15,14 @@ class PostTests {
     @Test
     void testPost() {
         System.out.println("------게시물 업로드 테스트...------");
-        postRepository.save(Post.builder()
+        postRepository.save(PostEntity.builder()
                 .title("테스트")
                 .content("테스트 게시물입니다")
                 .boardId(BuiltInRegistries.BOARDS.getOrThrow("free").id())
                 .createdAt(LocalDateTime.now())
                 .build()
         );
-        postRepository.save(Post.builder()
+        postRepository.save(PostEntity.builder()
                 .title("테스트2")
                 .content("아쎄이")
                 .boardId(BuiltInRegistries.BOARDS.getOrThrow("free").id())
@@ -32,7 +32,7 @@ class PostTests {
         System.out.println("------게시물 업로드 테스트 완료------");
 
         System.out.println("------게시물 로드 테스트...------");
-        postRepository.findAll().stream().map(Post::toDTO).forEach(post -> {
+        postRepository.findAll().stream().map(PostEntity::toDTO).forEach(post -> {
             System.out.println(post.toString());
         });
         System.out.println("------게시물 로드 테스트 완료------");

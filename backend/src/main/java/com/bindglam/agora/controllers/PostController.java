@@ -1,5 +1,6 @@
 package com.bindglam.agora.controllers;
 
+import com.bindglam.agora.post.Post;
 import com.bindglam.agora.post.PostDTO;
 import com.bindglam.agora.services.PostService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping(value = "/post/{postId}")
-    public ResponseEntity<PostDTO> getPost(@PathVariable long postId) {
+    public ResponseEntity<Post> getPost(@PathVariable long postId) {
         return ResponseEntity.of(postService.getPost(postId));
     }
 }
