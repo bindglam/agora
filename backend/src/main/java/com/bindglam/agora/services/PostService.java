@@ -2,6 +2,8 @@ package com.bindglam.agora.services;
 
 import com.bindglam.agora.post.PostDTO;
 
+import java.util.Optional;
+
 public interface PostService {
-    PostDTO getPost(long postId);
+    Optional<PostDTO> getPost(long postId);
 }

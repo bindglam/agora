@@ -3,6 +3,7 @@ package com.bindglam.agora.controllers;
 import com.bindglam.agora.post.PostDTO;
 import com.bindglam.agora.services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping(value = "/post/{postId}")
-    public PostDTO getPost(@PathVariable long postId) {
-        return postService.getPost(postId);
+    public ResponseEntity<PostDTO> getPost(@PathVariable long postId) {
+        return ResponseEntity.of(postService.getPost(postId));
     }
 }
