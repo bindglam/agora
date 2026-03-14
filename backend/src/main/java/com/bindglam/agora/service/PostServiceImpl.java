@@ -1,4 +1,4 @@
-package com.bindglam.agora.services;
+package com.bindglam.agora.service;
 
 import com.bindglam.agora.post.Post;
 import com.bindglam.agora.post.PostDTO;

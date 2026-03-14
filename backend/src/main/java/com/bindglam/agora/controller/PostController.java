@@ -1,7 +1,7 @@
-package com.bindglam.agora.controllers;
+package com.bindglam.agora.controller;
 
 import com.bindglam.agora.post.PostDTO;
-import com.bindglam.agora.services.PostService;
+import com.bindglam.agora.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
