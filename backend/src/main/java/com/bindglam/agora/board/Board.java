@@ -4,5 +4,5 @@ import com.bindglam.agora.utils.Identified;
 import lombok.Builder;
 
 @Builder
-public record Board(String id) implements Identified {
+public record Board(String id, BoardProperties properties) implements Identified {
 }
