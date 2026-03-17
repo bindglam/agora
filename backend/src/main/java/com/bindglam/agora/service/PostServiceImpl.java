@@ -23,4 +23,9 @@ public final class PostServiceImpl implements PostService {
     public List<PostDTO> getPostsByBoardId(String boardId) {
         return postRepository.findByBoardId(boardId).stream().map(Post::toDTO).toList();
     }
+
+    @Override
+    public PostDTO savePost(PostDTO post) {
+        return postRepository.save(post.toEntity()).toDTO();
+    }
 }

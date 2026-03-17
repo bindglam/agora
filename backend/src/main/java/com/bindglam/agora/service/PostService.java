@@ -9,4 +9,6 @@ public interface PostService {
     Optional<PostDTO> getPost(long postId);
 
     List<PostDTO> getPostsByBoardId(String boardId);
+
+    PostDTO savePost(PostDTO post);
 }
