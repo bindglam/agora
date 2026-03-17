@@ -4,6 +4,9 @@ import com.bindglam.agora.post.Post;
 import com.bindglam.agora.post.PostDTO;
 import com.bindglam.agora.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +23,10 @@ public final class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> getPostsByBoardId(String boardId) {
-        return postRepository.findByBoardId(boardId).stream().map(Post::toDTO).toList();
+    public Page<PostDTO> getPostsByBoardId(String boardId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return postRepository.findByBoardId(boardId, pageable).map(Post::toDTO);
     }
 
     @Override
