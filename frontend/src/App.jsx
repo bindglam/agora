@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import './App.css';
 
 import Home from "./components/Home";
+import Board from "./components/Board";
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -38,6 +39,7 @@ function App() {
         <div className="main-content" style={{ paddingTop: `${navbarHeight + 40}px` }}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/board/:boardId" element={<Board />} />
           </Routes>
         </div>
         <Footer />

@@ -30,8 +30,8 @@ function Navbar() {
         </div>
         <ul className="nav-links">
           <li><a href="/">홈</a></li>
-          <li><a href="/notice">공지사항</a></li>
-          <li><a href="/board">자유게시판</a></li>
+          <li><a href="/board/announcements">공지사항</a></li>
+          <li><a href="/board/free">자유게시판</a></li>
           <li><a href="/schedule">학급일정</a></li>
           <li><a href="/timetable">시간표</a></li>
         </ul>

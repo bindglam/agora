@@ -1,0 +1,103 @@
+.board-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.board-title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.create-post-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.create-post-btn:hover {
+  background-color: #0056b3;
+}
+
+.board-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.board-table th,
+.board-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.board-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.board-table tr:last-child td {
+  border-bottom: none;
+}
+
+.board-row {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.board-row:hover {
+  background-color: #f8f9fa;
+}
+
+.col-id {
+  width: 80px;
+  text-align: center;
+}
+
+.col-title {
+  width: auto;
+}
+
+.col-author {
+  width: 150px;
+}
+
+.col-date {
+  width: 120px;
+}
+
+.col-views {
+  width: 80px;
+  text-align: center;
+}
+
+.no-posts {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px solid #f5c6cb;
+}

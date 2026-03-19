@@ -13,10 +13,10 @@ function Home() {
                 우리 반 친구들과 소통하고 학급 활동을 함께 만들어가요!
             </p>
             <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <a href="/notice" className="btn btn-primary">
+                <a href="/board/announcements" className="btn btn-primary">
                 공지사항 보기
                 </a>
-                <a href="/board" className="btn btn-secondary">
+                <a href="/board/free" className="btn btn-secondary">
                 자유게시판
                 </a>
             </div>
