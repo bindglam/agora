@@ -1,5 +1,6 @@
 package com.bindglam.agora.post;
 
+import com.bindglam.agora.user.UserDTO;
 import com.bindglam.agora.utils.Identified;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ public final class PostDTO implements Identified {
     private String content;
     private String boardId;
     private LocalDateTime createdAt;
+    private UserDTO author;
 
     @Override
     public @NonNull String id() {
@@ -32,6 +34,7 @@ public final class PostDTO implements Identified {
                 .content(content)
                 .boardId(boardId)
                 .createdAt(createdAt)
+                .author(author.toEntity())
                 .build();
     }
 }
