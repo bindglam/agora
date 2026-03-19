@@ -7,14 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public final class PostServiceImpl implements PostService {
+public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
@@ -30,6 +30,7 @@ public final class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Async
     public PostDTO savePost(PostDTO post) {
         return postRepository.save(post.toEntity()).toDTO();
     }
