@@ -21,6 +21,7 @@ public final class BuiltInRegistries {
                     .properties(BoardProperties.builder()
                             .displayName("공지")
                             .description("웹사이트 관련 중요 소식에 관해 알려드립니다!")
+                            .isPostable(false)
                             .build())
                     .build()
     ));
