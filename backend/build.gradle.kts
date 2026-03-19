@@ -29,6 +29,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-community-dialects")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 }
 
 tasks.withType<Test> {
