@@ -7,7 +7,7 @@ import './Board.css';
 function Board() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const [boardName, setBoardName] = React.useState('');
+  const [boardProperties, setBoardProperties] = React.useState('');
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -22,7 +22,7 @@ function Board() {
           throw new Error('게시판 정보를 불러오는데 실패했습니다.');
         }
         const boardData = await boardResponse.json();
-        setBoardName(boardData.properties.displayName);
+        setBoardProperties(boardData.properties);
 
         const postsResponse = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}`);
         if (!postsResponse.ok) {
@@ -61,10 +61,12 @@ function Board() {
   return (
     <div className="board-container">
       <div className="board-header">
-        <h1 className="board-title">{boardName}</h1>
-        <button className="create-post-btn" onClick={handleCreatePost}>
+        <h1 className="board-title">{boardProperties.displayName}</h1>
+        {boardProperties.postable &&
+          <button className="create-post-btn" onClick={handleCreatePost}>
           글쓰기
-        </button>
+          </button>
+        }
       </div>
 
       {posts.length === 0 ? (
