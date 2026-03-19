@@ -14,6 +14,7 @@ import org.jspecify.annotations.NonNull;
 public final class UserDTO implements Identified {
     private String nickname;
     private String password;
+    private UserPermission permission;
 
     @Override
     public @NonNull String id() {
@@ -24,6 +25,7 @@ public final class UserDTO implements Identified {
         return User.builder()
                 .nickname(nickname)
                 .password(password)
+                .permission(permission)
                 .build();
     }
 }

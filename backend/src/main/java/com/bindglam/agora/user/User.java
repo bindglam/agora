@@ -20,6 +20,8 @@ public final class User implements Identified {
 
     private String password;
 
+    private UserPermission permission;
+
     @Override
     public @NonNull String id() {
         return nickname;
@@ -29,6 +31,7 @@ public final class User implements Identified {
         return UserDTO.builder()
                 .nickname(nickname)
                 .password(password)
+                .permission(permission)
                 .build();
     }
 }

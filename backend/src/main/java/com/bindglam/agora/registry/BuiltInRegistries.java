@@ -2,6 +2,7 @@ package com.bindglam.agora.registry;
 
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.board.BoardProperties;
+import com.bindglam.agora.user.UserPermission;
 import com.bindglam.agora.utils.Identified;
 import org.springframework.data.util.Pair;
 
@@ -21,7 +22,9 @@ public final class BuiltInRegistries {
                     .properties(BoardProperties.builder()
                             .displayName("공지")
                             .description("웹사이트 관련 중요 소식에 관해 알려드립니다!")
-                            .isPostable(false)
+                            .permissions(BoardProperties.Permissions.builder()
+                                    .posting(UserPermission.ADMIN)
+                                    .build())
                             .build())
                     .build()
     ));
