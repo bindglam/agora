@@ -47,7 +47,7 @@ function Board() {
   };
 
   const handlePostClick = (postId) => {
-    navigate(`/board/${boardId}/${postId}`);
+    navigate(`/post/${postId}`);
   };
 
   if (loading) {
@@ -62,7 +62,7 @@ function Board() {
     <div className="board-container">
       <div className="board-header">
         <h1 className="board-title">{boardProperties.displayName}</h1>
-        {boardProperties.postable &&
+        {boardProperties.permissions.posting == "DEFAULT" &&
           <button className="create-post-btn" onClick={handleCreatePost}>
           글쓰기
           </button>
@@ -91,7 +91,7 @@ function Board() {
               >
                 <td className="col-title">{post.title}</td>
                 <td className="col-content">{post.content}</td>
-                <td className="col-author">{post.author.nickname}</td>
+                <td className="col-author">{post.author}</td>
                 <td className="col-date">
                   {new Date(post.createdAt).toLocaleDateString()}
                 </td>
