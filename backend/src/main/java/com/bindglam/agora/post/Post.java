@@ -2,7 +2,6 @@ package com.bindglam.agora.post;
 
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.registry.BuiltInRegistries;
-import com.bindglam.agora.user.User;
 import com.bindglam.agora.utils.Identified;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,9 +32,7 @@ public final class Post implements Identified {
 
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private User author;
+    private String author;
 
     @Override
     public @NonNull String id() {
@@ -53,7 +50,7 @@ public final class Post implements Identified {
                 .content(content)
                 .boardId(boardId)
                 .createdAt(createdAt)
-                .author(author.toDTO())
+                .author(author)
                 .build();
     }
 }
