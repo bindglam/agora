@@ -1,8 +1,10 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../constants';
+import { getCookie } from '../utils';
 
 import './Board.css';
+import WritePostModal from '../components/WritePostModal';
 
 function Board() {
   const { boardId } = useParams();
@@ -11,6 +13,7 @@ function Board() {
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+  const [isWriteModalOpen, setIsWriteModalOpen] = React.useState(false);
 
   React.useEffect(() => {
     const fetchInformation = async () => {
@@ -43,7 +46,43 @@ function Board() {
   }, [boardId]);
 
   const handleCreatePost = () => {
-    navigate(`/board/${boardId}/new`);
+    setIsWriteModalOpen(true);
+  };
+
+  const handleWriteModalClose = () => {
+    setIsWriteModalOpen(false);
+  };
+
+  const handleWriteSubmit = async (postData) => {
+    const username = getCookie('username');
+
+    if (!username) {
+      alert('유저 정보 등록이 필요합니다.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/post-api/post`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...postData,
+          boardId: boardId,
+          author: username,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('게시글 작성에 실패했습니다.');
+      }
+
+      const newPost = await response.json();
+      setPosts([newPost, ...posts]);
+    } catch (err) {
+      throw err;
+    }
   };
 
   const handlePostClick = (postId) => {
@@ -60,6 +99,13 @@ function Board() {
 
   return (
     <div className="board-container">
+      <WritePostModal
+        isOpen={isWriteModalOpen}
+        onClose={handleWriteModalClose}
+        onSubmit={handleWriteSubmit}
+        boardName={boardProperties.displayName}
+      />
+
       <div className="board-header">
         <h1 className="board-title">{boardProperties.displayName}</h1>
         {boardProperties.permissions.posting == "DEFAULT" &&
