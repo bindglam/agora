@@ -30,7 +30,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @Async
     public PostDTO savePost(PostDTO post) {
         return postRepository.save(post.toEntity()).toDTO();
     }
