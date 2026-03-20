@@ -2,14 +2,14 @@ package com.bindglam.agora.controller;
 
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.post.PostDTO;
+import com.bindglam.agora.post.PostRequests;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import com.bindglam.agora.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +38,17 @@ public final class PostController {
         }
     }
 
-    @PostMapping(value = "/post/")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
+    @PostMapping(value = "/post")
+    public ResponseEntity<PostDTO> createPost(@RequestBody PostRequests.Create request) {
+        // TODO : permission check
+        PostDTO postDTO = PostDTO.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .boardId(request.getBoardId())
+                .createdAt(LocalDateTime.now())
+                .author(request.getAuthor())
+                .build();
+
         return ResponseEntity.ok(postService.savePost(postDTO));
     }
 }
