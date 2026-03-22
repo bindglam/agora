@@ -14,6 +14,9 @@ function Board() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const [isWriteModalOpen, setIsWriteModalOpen] = React.useState(false);
+  const [page, setPage] = React.useState(0);
+  const [pageSize, setPageSize] = React.useState(10);
+  const [totalCount, setTotalCount] = React.useState(0);
 
   React.useEffect(() => {
     const fetchInformation = async () => {
@@ -27,12 +30,18 @@ function Board() {
         const boardData = await boardResponse.json();
         setBoardProperties(boardData.properties);
 
-        const postsResponse = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}`);
+        const totalPostsResponse = await fetch(`${API_BASE_URL}/post-api/total-posts/${boardId}`);
+        if (!totalPostsResponse.ok) {
+          throw new Error('게시글을 불러오는데 실패했습니다.');
+        }
+        setTotalCount(parseInt(await totalPostsResponse.text()));
+
+        const postsResponse = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}?page=${page}&size=${pageSize}`);
         if (!postsResponse.ok) {
           throw new Error('게시글을 불러오는데 실패했습니다.');
         }
         const postsData = await postsResponse.json();
-        setPosts(postsData);
+        setPosts(postsData.content || postsData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -43,7 +52,7 @@ function Board() {
     if (boardId) {
       fetchInformation();
     }
-  }, [boardId]);
+  }, [boardId, page, pageSize]);
 
   const handleCreatePost = () => {
     setIsWriteModalOpen(true);
@@ -62,7 +71,7 @@ function Board() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/post-api/post`, {
+      const responseRaw = await fetch(`${API_BASE_URL}/post-api/post`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,12 +83,17 @@ function Board() {
         }),
       });
 
-      if (!response.ok) {
+      if (!responseRaw.ok) {
         throw new Error('게시글 작성에 실패했습니다.');
       }
 
-      const newPost = await response.json();
-      setPosts([newPost, ...posts]);
+      const response = await responseRaw.json();
+
+      if(response.censorResult.good === false) {
+        alert('게시글에 부적절한 내용이 포함되어 있습니다. 수정 후 다시 시도해주세요.\n사유: ' + response.censorResult.reason);
+      } else {
+        setPage(0);
+      }
     } catch (err) {
       throw err;
     }
@@ -87,6 +101,23 @@ function Board() {
 
   const handlePostClick = (postId) => {
     navigate(`/post/${postId}`);
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(totalCount / pageSize);
+    if (page < totalPages - 1) {
+      setPage(page + 1);
+    }
   };
 
   if (loading) {
@@ -118,33 +149,57 @@ function Board() {
       {posts.length === 0 ? (
         <div className="no-posts">게시글이 없습니다.</div>
       ) : (
-        <table className="board-table">
-          <thead>
-            <tr>
-              <th className="col-title">제목</th>
-              <th className="col-content">내용</th>
-              <th className="col-author">작성자</th>
-              <th className="col-date">작성일</th>
-              {/*<th className="col-views">조회</th>*/}
-            </tr>
-          </thead>
-          <tbody>
-            {posts.map((post) => (
-              <tr
-                key={post.id}
-                className="board-row"
-                onClick={() => handlePostClick(post.id)}
-              >
-                <td className="col-title">{post.title}</td>
-                <td className="col-content">{post.content}</td>
-                <td className="col-author">{post.author}</td>
-                <td className="col-date">
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </td>
+        <>
+          <table className="board-table">
+            <thead>
+              <tr>
+                <th className="col-title">제목</th>
+                <th className="col-content">내용</th>
+                <th className="col-author">작성자</th>
+                <th className="col-date">작성일</th>
+                {/*<th className="col-views">조회</th>*/}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {posts.filter((post) => post.public === true).map((post) => (
+                <tr
+                  key={post.id}
+                  className="board-row"
+                  onClick={() => handlePostClick(post.id)}
+                >
+                  <td className="col-title">{post.title}</td>
+                  <td className="col-content">{post.content}</td>
+                  <td className="col-author">{post.author}</td>
+                  <td className="col-date">
+                    {new Date(post.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {totalCount > 0 && (
+            <div className="pagination">
+              <button
+                className="pagination-btn"
+                onClick={handlePreviousPage}
+                disabled={page === 0}
+              >
+                이전
+              </button>
+              <span className="pagination-info">
+                {page + 1} / {Math.max(1, Math.ceil(totalCount / pageSize))}
+              </span>
+              <button
+                className="pagination-btn"
+                onClick={handleNextPage}
+                disabled={page >= Math.ceil(totalCount / pageSize) - 1}
+              >
+                다음
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
