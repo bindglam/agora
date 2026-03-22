@@ -38,6 +38,17 @@ public final class PostController {
         }
     }
 
+    @GetMapping(value = "/total-posts/{boardId}")
+    public ResponseEntity<Integer> getTotalPosts(@PathVariable String boardId) {
+        Optional<Board> optional = BuiltInRegistries.BOARDS.get(boardId);
+        if(optional.isPresent()) {
+            Board board = optional.get();
+            return ResponseEntity.ok(postService.getTotalPosts(board.id()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping(value = "/post")
     public ResponseEntity<PostRequests.Create.Response> createPost(@RequestBody PostRequests.Create request) {
         // TODO : permission check
@@ -47,6 +58,7 @@ public final class PostController {
                 .boardId(request.getBoardId())
                 .createdAt(LocalDateTime.now())
                 .author(request.getAuthor())
+                .isPublic(false) // TODO : true
                 .build();
 
         return ResponseEntity.ok(postService.createPost(postDTO));

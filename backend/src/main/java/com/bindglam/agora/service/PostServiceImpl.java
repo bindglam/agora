@@ -35,6 +35,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public int getTotalPosts(String boardId) {
+        return postRepository.countByBoardId(boardId);
+    }
+
+    @Override
     public PostRequests.Create.Response createPost(PostDTO post) {
         PostDTO newPost = null;
         CensorResult censorResult = censorServer.tryCensor(post).join();

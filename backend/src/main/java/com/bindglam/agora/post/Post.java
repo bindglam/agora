@@ -34,6 +34,8 @@ public final class Post implements Identified {
 
     private String author;
 
+    private boolean isPublic;
+
     @Override
     public @NonNull String id() {
         return String.valueOf(id);
@@ -51,6 +53,7 @@ public final class Post implements Identified {
                 .boardId(boardId)
                 .createdAt(createdAt)
                 .author(author)
+                .isPublic(isPublic)
                 .build();
     }
 }

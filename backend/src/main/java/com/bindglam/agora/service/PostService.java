@@ -12,5 +12,7 @@ public interface PostService {
 
     Page<PostDTO> getPostsByBoardId(String boardId, int page, int size);
 
+    int getTotalPosts(String boardId);
+
     PostRequests.Create.Response createPost(PostDTO post);
 }

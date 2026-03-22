@@ -20,6 +20,7 @@ public final class PostDTO implements Identified {
     private String boardId;
     private LocalDateTime createdAt;
     private String author;
+    private boolean isPublic;
 
     @Override
     public @NonNull String id() {
@@ -34,6 +35,7 @@ public final class PostDTO implements Identified {
                 .boardId(boardId)
                 .createdAt(createdAt)
                 .author(author)
+                .isPublic(isPublic)
                 .build();
     }
 }
