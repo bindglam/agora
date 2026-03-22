@@ -39,7 +39,7 @@ public final class PostController {
     }
 
     @PostMapping(value = "/post")
-    public ResponseEntity<PostDTO> createPost(@RequestBody PostRequests.Create request) {
+    public ResponseEntity<PostRequests.Create.Response> createPost(@RequestBody PostRequests.Create request) {
         // TODO : permission check
         PostDTO postDTO = PostDTO.builder()
                 .title(request.getTitle())
@@ -49,6 +49,6 @@ public final class PostController {
                 .author(request.getAuthor())
                 .build();
 
-        return ResponseEntity.ok(postService.savePost(postDTO));
+        return ResponseEntity.ok(postService.createPost(postDTO));
     }
 }

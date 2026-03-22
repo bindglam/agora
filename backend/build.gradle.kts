@@ -30,6 +30,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.61")
 }
 
 tasks.withType<Test> {
