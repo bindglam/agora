@@ -25,7 +25,7 @@ public final class PostController {
     }
 
     @GetMapping(value = "/posts/{boardId}")
-    public ResponseEntity<List<PostDTO>> getPost(@PathVariable String boardId, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="size", defaultValue="20") int size) {
+    public ResponseEntity<List<PostDTO>> getPosts(@PathVariable String boardId, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="size", defaultValue="20") int size) {
         if(page < 0 || size < 0)
             return ResponseEntity.badRequest().build();
 
