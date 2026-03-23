@@ -5,16 +5,10 @@ import com.bindglam.agora.post.PostDTO;
 import com.bindglam.agora.post.PostRequests;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import com.bindglam.agora.post.service.PostService;
-import com.bindglam.agora.user.User;
-import com.bindglam.agora.user.UserDTO;
-import com.bindglam.agora.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class PostController {
     private final PostService postService;
-    private final UserService userService;
 
     @GetMapping(value = "/post/{postId}")
     public ResponseEntity<PostDTO> getPost(@PathVariable long postId) {
