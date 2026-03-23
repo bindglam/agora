@@ -10,12 +10,14 @@ import com.bindglam.agora.post.censor.CensorServer;
 import com.bindglam.agora.post.censor.LocalCensorServer;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import com.bindglam.agora.user.UserDTO;
+import com.bindglam.agora.user.UserPermission;
 import com.bindglam.agora.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,15 +33,15 @@ public final class PostServiceImpl implements PostService {
     private final CensorServer censorServer = new LocalCensorServer();
 
     @Override
-    public Optional<PostDTO> getPost(long postId) {
-        return postRepository.findById(postId).map(Post::toDTO);
+    public Optional<PostDTO> getPost(@NonNull UserDTO user, long postId) {
+        return postRepository.findById(postId).map(Post::toDTO).filter(post -> post.isPublic() || user.permission().check(UserPermission.ADMIN));
     }
 
     @Override
-    public Page<PostDTO> getPostsByBoardId(String boardId, int page, int size) {
+    public Streamable<PostDTO> getPostsByBoardId(@NonNull UserDTO user, String boardId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        return postRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable).map(Post::toDTO);
+        return postRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable).map(Post::toDTO).filter(post -> post.isPublic() || user.permission().check(UserPermission.ADMIN));
     }
 
     @Override
