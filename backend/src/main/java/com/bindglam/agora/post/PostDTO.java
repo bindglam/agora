@@ -1,10 +1,9 @@
 package com.bindglam.agora.post;
 
+import com.bindglam.agora.user.User;
+import com.bindglam.agora.user.UserDTO;
 import com.bindglam.agora.utils.Identified;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
@@ -16,7 +15,7 @@ public record PostDTO(
         String content,
         String boardId,
         LocalDateTime createdAt,
-        String author,
+        UserDTO author,
         boolean isPublic
 ) implements Identified {
     @Override
@@ -31,7 +30,7 @@ public record PostDTO(
                 .content(content)
                 .boardId(boardId)
                 .createdAt(createdAt)
-                .author(author)
+                .author(author.toEntity())
                 .isPublic(isPublic)
                 .build();
     }

@@ -1,15 +1,20 @@
 package com.bindglam.agora.post;
 
 import com.bindglam.agora.post.censor.CensorResult;
+import com.bindglam.agora.utils.Requests;
 import lombok.Builder;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 public interface PostRequests {
     @Builder
-    record Create(@NonNull String title, @NonNull String content, @NonNull String boardId, @NonNull String author) {
+    record Create(@NonNull String title, @NonNull String content, @NonNull String boardId, @NonNull String authorUsername) {
         @Builder
-        public record Response(@Nullable PostDTO post, @NonNull CensorResult censorResult) {
+        public record Response(@Nullable PostDTO post, @NonNull CensorResult censorResult, @Nullable String errorMessage) implements Requests.Response {
+            @Override
+            public @Nullable String errorMessage() {
+                return errorMessage != null ? errorMessage : (censorResult.isGood() ? null : censorResult.getReason());
+            }
         }
     }
 }

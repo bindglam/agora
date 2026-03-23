@@ -4,6 +4,7 @@ import com.bindglam.agora.user.UserPermission;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Builder
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public final class BoardProperties {
     @Getter
     public static final class Permissions {
         @Builder.Default
+        @Accessors(fluent = true)
         private final UserPermission posting = UserPermission.DEFAULT;
     }
 }
