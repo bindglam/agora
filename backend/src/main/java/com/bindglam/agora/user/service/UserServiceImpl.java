@@ -2,12 +2,14 @@ package com.bindglam.agora.user.service;
 
 import com.bindglam.agora.user.User;
 import com.bindglam.agora.user.UserDTO;
+import com.bindglam.agora.user.UserPermission;
 import com.bindglam.agora.user.UserRequests;
 import com.bindglam.agora.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,8 @@ public final class UserServiceImpl implements UserService {
                 .user(userRepository.save(
                         User.builder()
                                 .username(request.username())
+                                .permission(UserPermission.DEFAULT) // TODO : admin
+                                .createdAt(LocalDateTime.now())
                                 .build()
                 ).toDTO())
                 .build();
