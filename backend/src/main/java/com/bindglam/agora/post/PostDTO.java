@@ -16,7 +16,7 @@ public record PostDTO(
         String boardId,
         LocalDateTime createdAt,
         UserDTO author,
-        boolean isPublic
+        PostVisibility visibility
 ) implements Identified {
     @Override
     public @NonNull String id() {
@@ -31,7 +31,7 @@ public record PostDTO(
                 .boardId(boardId)
                 .createdAt(createdAt)
                 .author(author.toEntity())
-                .isPublic(isPublic)
+                .visibility(visibility)
                 .build();
     }
 }

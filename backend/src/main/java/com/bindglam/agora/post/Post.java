@@ -37,7 +37,7 @@ public final class Post implements Identified {
     @JoinColumn(name = "author_username")
     private User author;
 
-    private boolean isPublic;
+    private PostVisibility visibility;
 
     @Override
     public @NonNull String id() {
@@ -56,7 +56,7 @@ public final class Post implements Identified {
                 .boardId(boardId)
                 .createdAt(createdAt)
                 .author(author.toDTO())
-                .isPublic(isPublic)
+                .visibility(visibility)
                 .build();
     }
 }

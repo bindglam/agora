@@ -3,6 +3,7 @@ package com.bindglam.agora.post.service;
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.post.Post;
 import com.bindglam.agora.post.PostDTO;
+import com.bindglam.agora.post.PostVisibility;
 import com.bindglam.agora.post.repository.PostRepository;
 import com.bindglam.agora.post.PostRequests;
 import com.bindglam.agora.post.censor.CensorResult;
@@ -34,14 +35,14 @@ public final class PostServiceImpl implements PostService {
 
     @Override
     public Optional<PostDTO> getPost(@NonNull UserDTO user, long postId) {
-        return postRepository.findById(postId).map(Post::toDTO).filter(post -> post.isPublic() || user.permission().check(UserPermission.ADMIN));
+        return postRepository.findById(postId).map(Post::toDTO).filter(post -> post.visibility() == PostVisibility.PUBLIC || post.visibility() == PostVisibility.NOT_LISTED || user.permission().check(UserPermission.ADMIN));
     }
 
     @Override
     public Streamable<PostDTO> getPostsByBoardId(@NonNull UserDTO user, String boardId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        return postRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable).map(Post::toDTO).filter(post -> post.isPublic() || user.permission().check(UserPermission.ADMIN));
+        return postRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable).map(Post::toDTO).filter(post -> post.visibility() == PostVisibility.PUBLIC || user.permission().check(UserPermission.ADMIN));
     }
 
     @Override
@@ -68,7 +69,7 @@ public final class PostServiceImpl implements PostService {
                 .boardId(request.boardId())
                 .createdAt(LocalDateTime.now())
                 .author(user)
-                .isPublic(true)
+                .visibility(PostVisibility.PUBLIC)
                 .build();
         CensorResult censorResult = censorServer.tryCensor(postDTO).join();
 
