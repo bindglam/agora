@@ -57,7 +57,7 @@ public final class PostServiceImpl implements PostService {
         if(user == null)
             return PostRequests.Create.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
 
-        if(!user.permission().check(board.properties().getPermissions().posting()))
+        if(!user.permission().check(board.properties().getPermissions().getPosting()))
             return PostRequests.Create.Response.builder().errorMessage("권한이 없습니다.").build();
 
         PostDTO postDTO = PostDTO.builder()
