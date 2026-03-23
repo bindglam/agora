@@ -1,10 +1,10 @@
-package com.bindglam.agora.controller;
+package com.bindglam.agora.post.controller;
 
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.post.PostDTO;
 import com.bindglam.agora.post.PostRequests;
 import com.bindglam.agora.registry.BuiltInRegistries;
-import com.bindglam.agora.service.PostService;
+import com.bindglam.agora.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,11 +53,11 @@ public final class PostController {
     public ResponseEntity<PostRequests.Create.Response> createPost(@RequestBody PostRequests.Create request) {
         // TODO : permission check
         PostDTO postDTO = PostDTO.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .boardId(request.getBoardId())
+                .title(request.title())
+                .content(request.content())
+                .boardId(request.boardId())
                 .createdAt(LocalDateTime.now())
-                .author(request.getAuthor())
+                .author(request.author())
                 .isPublic(false) // TODO : true
                 .build();
 

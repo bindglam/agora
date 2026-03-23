@@ -1,8 +1,8 @@
-package com.bindglam.agora.service;
+package com.bindglam.agora.post.service;
 
 import com.bindglam.agora.post.Post;
 import com.bindglam.agora.post.PostDTO;
-import com.bindglam.agora.post.PostRepository;
+import com.bindglam.agora.post.repository.PostRepository;
 import com.bindglam.agora.post.PostRequests;
 import com.bindglam.agora.post.censor.CensorResult;
 import com.bindglam.agora.post.censor.CensorServer;

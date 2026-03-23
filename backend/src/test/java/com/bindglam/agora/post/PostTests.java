@@ -1,5 +1,6 @@
 package com.bindglam.agora.post;
 
+import com.bindglam.agora.post.repository.PostRepository;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

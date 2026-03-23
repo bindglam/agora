@@ -1,4 +1,4 @@
-package com.bindglam.agora.controller;
+package com.bindglam.agora.board.controller;
 
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.registry.BuiltInRegistries;
