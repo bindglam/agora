@@ -1,7 +1,10 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../constants';
-import { getCookie } from '../utils';
+
+import { getUsernameInCookie } from '../api/user';
+import { getBoard } from '../api/board';
+import { getTotalPosts, getPosts, createPost } from '../api/post';
 
 import './Board.css';
 import WritePostModal from '../components/WritePostModal';
@@ -23,25 +26,11 @@ function Board() {
       try {
         setLoading(true);
 
-        const boardResponse = await fetch(`${API_BASE_URL}/board-api/board/${boardId}`);
-        if (!boardResponse.ok) {
-          throw new Error('게시판 정보를 불러오는데 실패했습니다.');
-        }
-        const boardData = await boardResponse.json();
+        const boardData = await getBoard(boardId);
         setBoardProperties(boardData.properties);
 
-        const totalPostsResponse = await fetch(`${API_BASE_URL}/post-api/total-posts/${boardId}`);
-        if (!totalPostsResponse.ok) {
-          throw new Error('게시글을 불러오는데 실패했습니다.');
-        }
-        setTotalCount(parseInt(await totalPostsResponse.text()));
-
-        const postsResponse = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}?page=${page}&size=${pageSize}`);
-        if (!postsResponse.ok) {
-          throw new Error('게시글을 불러오는데 실패했습니다.');
-        }
-        const postsData = await postsResponse.json();
-        setPosts(postsData.content || postsData);
+        setTotalCount(await getTotalPosts(boardId));
+        setPosts(await getPosts(getUsernameInCookie(), boardId, page, pageSize));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -63,38 +52,18 @@ function Board() {
   };
 
   const handleWriteSubmit = async (postData) => {
-    const username = getCookie('username');
-
+    const username = getUsernameInCookie();
     if (!username) {
       alert('유저 정보 등록이 필요합니다.');
       return;
     }
 
     try {
-      const responseRaw = await fetch(`${API_BASE_URL}/post-api/post`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...postData,
-          boardId: boardId,
-          author: username,
-        }),
-      });
+      const response = await createPost(postData.title, postData.content, boardId, username);
 
-      if (!responseRaw.ok) {
-        throw new Error('게시글 작성에 실패했습니다.');
-      }
-
-      const response = await responseRaw.json();
-
-      if(response.censorResult.good === false) {
-        alert('게시글에 부적절한 내용이 포함되어 있습니다. 수정 후 다시 시도해주세요.\n사유: ' + response.censorResult.reason);
-      } else {
-        setPage(0);
-      }
+      setPage(0);
     } catch (err) {
+      alert(err.message);
       throw err;
     }
   };
@@ -161,15 +130,15 @@ function Board() {
               </tr>
             </thead>
             <tbody>
-              {posts.filter((post) => post.public === true).map((post) => (
+              {posts.map((post) => (
                 <tr
                   key={post.id}
                   className="board-row"
-                  onClick={() => handlePostClick(post.id)}
+                  onClick={() => handlePostClick(post.postId)}
                 >
                   <td className="col-title">{post.title}</td>
                   <td className="col-content">{post.content}</td>
-                  <td className="col-author">{post.author}</td>
+                  <td className="col-author">{post.author.username}</td>
                   <td className="col-date">
                     {new Date(post.createdAt).toLocaleDateString()}
                   </td>

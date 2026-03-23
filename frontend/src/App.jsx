@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getCookie, setCookie } from './utils';
+
+import { getUsernameInCookie, setUsernameInCookie, resetUsernameInCookie, getCurrentUser, createUser } from './api/user';
 
 import './App.css';
 
@@ -24,28 +25,34 @@ function App() {
       }
     };
 
-    // 초기 계산
     calculateNavbarHeight();
 
-    // resize 이벤트 리스너 추가
     window.addEventListener('resize', calculateNavbarHeight);
 
-    // 컴포넌트 언마운트 시 리스너 제거
     return () => {
       window.removeEventListener('resize', calculateNavbarHeight);
     };
   }, []);
 
   useEffect(() => {
-    const username = getCookie('username');
-    if (!username) {
-      setIsUserInfoModalOpen(true);
-    }
+    getCurrentUser().then((user) => {
+      if(user === null) {
+        resetUsernameInCookie();
+        setIsUserInfoModalOpen(true);
+      }
+    });
   }, []);
 
-  const handleUserInfoSubmit = (username) => {
-    setCookie('username', username, 365); // 1년 동안 쿠키 유지
-    setIsUserInfoModalOpen(false);
+  const handleUserInfoSubmit = async (username) => {
+    try {
+      const response = await createUser(username);
+
+      setUsernameInCookie(username);
+
+      setIsUserInfoModalOpen(false);
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from '../constants';
+
+import { getUsernameInCookie } from '../api/user';
+import { getPost } from '../api/post';
 
 import './Post.css';
 
@@ -15,12 +17,8 @@ function Post() {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${API_BASE_URL}/post-api/post/${postId}`);
-        if (!response.ok) {
-          throw new Error('게시글을 불러오는데 실패했습니다.');
-        }
-        const data = await response.json();
-        setPost(data);
+        const post = await getPost(getUsernameInCookie(), postId);
+        setPost(post);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -68,7 +66,7 @@ function Post() {
         <h1 className="post-title">{post.title}</h1>
 
         <div className="post-meta">
-          <span className="post-author">작성자: {post.author}</span>
+          <span className="post-author">작성자: {post.author.username}</span>
           <span className="post-date">
             작성일: {new Date(post.createdAt).toLocaleString()}
           </span>
