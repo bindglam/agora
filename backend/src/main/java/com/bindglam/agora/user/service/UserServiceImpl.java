@@ -32,7 +32,7 @@ public final class UserServiceImpl implements UserService {
                 .user(userRepository.save(
                         User.builder()
                                 .username(request.username())
-                                .permission(UserPermission.DEFAULT) // TODO : admin
+                                .permission(UserPermission.DEFAULT)
                                 .createdAt(LocalDateTime.now())
                                 .build()
                 ).toDTO())
