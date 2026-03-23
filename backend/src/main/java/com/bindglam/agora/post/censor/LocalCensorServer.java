@@ -43,7 +43,7 @@ public final class LocalCensorServer implements CensorServer {
     @Override
     public CompletableFuture<CensorResult> tryCensor(PostDTO post) {
         return CompletableFuture.supplyAsync(() -> {
-            String prompt = PROMPT_TEMPLATE.replace("{post_title}", post.getTitle()).replace("{post_content}", post.getContent());
+            String prompt = PROMPT_TEMPLATE.replace("{post_title}", post.title()).replace("{post_content}", post.content());
 
             try(HttpClient client = HttpClient.newBuilder().build()) {
                 HttpRequest request = HttpRequest.newBuilder()

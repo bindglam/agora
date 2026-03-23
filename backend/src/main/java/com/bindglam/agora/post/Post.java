@@ -47,7 +47,7 @@ public final class Post implements Identified {
 
     public @NonNull PostDTO toDTO() {
         return PostDTO.builder()
-                .id(id)
+                .postId(id)
                 .title(title)
                 .content(content)
                 .boardId(boardId)

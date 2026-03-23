@@ -9,27 +9,24 @@ import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public final class PostDTO implements Identified {
-    private Long id;
-    private String title;
-    private String content;
-    private String boardId;
-    private LocalDateTime createdAt;
-    private String author;
-    private boolean isPublic;
-
+public record PostDTO(
+        Long postId,
+        String title,
+        String content,
+        String boardId,
+        LocalDateTime createdAt,
+        String author,
+        boolean isPublic
+) implements Identified {
     @Override
     public @NonNull String id() {
-        return String.valueOf(id);
+        return String.valueOf(postId);
     }
 
     public Post toEntity() {
         return Post.builder()
-                .id(id)
+                .id(postId)
                 .title(title)
                 .content(content)
                 .boardId(boardId)
