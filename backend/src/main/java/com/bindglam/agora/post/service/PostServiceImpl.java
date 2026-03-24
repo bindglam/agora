@@ -46,8 +46,15 @@ public final class PostServiceImpl implements PostService {
     }
 
     @Override
-    public int getTotalPosts(String boardId) {
-        return postRepository.countByBoardId(boardId);
+    public int getTotalPosts(@NonNull UserDTO user, String boardId) {
+        int total = postRepository.countByBoardIdAndVisibility(boardId, PostVisibility.PUBLIC);
+        if(user.permission() == UserPermission.ADMIN) {
+            // TODO : optimization
+            total += postRepository.countByBoardIdAndVisibility(boardId, PostVisibility.PRIVATE)
+                    + postRepository.countByBoardIdAndVisibility(boardId, PostVisibility.NOT_LISTED);
+        }
+
+        return total;
     }
 
     @Override

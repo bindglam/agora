@@ -14,7 +14,7 @@ public interface PostService {
 
     Streamable<PostDTO> getPostsByBoardId(@NonNull UserDTO user, String boardId, int page, int size);
 
-    int getTotalPosts(String boardId);
+    int getTotalPosts(@NonNull UserDTO user, String boardId);
 
     PostRequests.Create.@NonNull Response createPost(PostRequests.@NonNull Create request);
 }

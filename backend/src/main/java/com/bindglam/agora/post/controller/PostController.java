@@ -49,11 +49,15 @@ public final class PostController {
     }
 
     @GetMapping(value = "/total-posts/{boardId}")
-    public ResponseEntity<Integer> getTotalPosts(@PathVariable String boardId) {
+    public ResponseEntity<Integer> getTotalPosts(@RequestParam(name = "user") String username, @PathVariable String boardId) {
+        UserDTO user = userService.getUser(username).orElse(null);
+        if(user == null)
+            return ResponseEntity.notFound().build();
+
         Optional<Board> optional = BuiltInRegistries.BOARDS.get(boardId);
         if(optional.isPresent()) {
             Board board = optional.get();
-            return ResponseEntity.ok(postService.getTotalPosts(board.id()));
+            return ResponseEntity.ok(postService.getTotalPosts(user, board.id()));
         } else {
             return ResponseEntity.notFound().build();
         }
