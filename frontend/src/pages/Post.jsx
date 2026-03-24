@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 
 import { getPost } from '../api/post';
 
@@ -74,7 +75,7 @@ function Post() {
         </div>
 
         <div className="post-body">
-          {post.content}
+          <ReactMarkdown>{post.content}</ReactMarkdown>
         </div>
       </div>
     </div>
