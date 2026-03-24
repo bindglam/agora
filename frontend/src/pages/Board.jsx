@@ -12,11 +12,13 @@ import WritePostModal from '../components/WritePostModal';
 function Board() {
   const { boardId } = useParams();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
   const [currentUser, setCurrentUser] = React.useState(null);
   const [boardProperties, setBoardProperties] = React.useState('');
   const [posts, setPosts] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
   const [isWriteModalOpen, setIsWriteModalOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(10);

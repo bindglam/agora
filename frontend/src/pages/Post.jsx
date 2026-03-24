@@ -9,9 +9,11 @@ import './Post.css';
 function Post() {
   const { postId } = useParams();
   const navigate = useNavigate();
-  const [post, setPost] = React.useState(null);
+
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+
+  const [post, setPost] = React.useState(null);
 
   React.useEffect(() => {
     const fetchPost = async () => {
