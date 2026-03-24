@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../constants';
 
-import { getUsernameInCookie } from '../api/user';
+import { getCurrentUser, getUsernameInCookie, UserPermission, hasPermission } from '../api/user';
 import { getBoard } from '../api/board';
 import { getTotalPosts, getPosts, createPost } from '../api/post';
 
@@ -12,6 +12,7 @@ import WritePostModal from '../components/WritePostModal';
 function Board() {
   const { boardId } = useParams();
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = React.useState(null);
   const [boardProperties, setBoardProperties] = React.useState('');
   const [posts, setPosts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -25,6 +26,8 @@ function Board() {
     const fetchInformation = async () => {
       try {
         setLoading(true);
+
+        setCurrentUser(await getCurrentUser());
 
         const boardData = await getBoard(boardId);
         setBoardProperties(boardData.properties);
@@ -108,7 +111,7 @@ function Board() {
 
       <div className="board-header">
         <h1 className="board-title">{boardProperties.displayName}</h1>
-        {boardProperties.permissions.posting == "DEFAULT" &&
+        {hasPermission(UserPermission[currentUser.permission], UserPermission[boardProperties.permissions.posting]) &&
           <button className="create-post-btn" onClick={handleCreatePost}>
           글쓰기
           </button>
