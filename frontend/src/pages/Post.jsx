@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { getUsernameInCookie } from '../api/user';
 import { getPost } from '../api/post';
 
 import './Post.css';

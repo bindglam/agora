@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from '../constants';
 
 import { getCurrentUser, getUsernameInCookie, UserPermission, hasPermission } from '../api/user';
 import { getBoard } from '../api/board';

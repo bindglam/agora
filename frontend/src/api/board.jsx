@@ -7,11 +7,3 @@ export const getBoard = async (boardId) => {
   }
   return await responseRaw.json();
 };
-
-export const getPosts = async (boardId, page, pageSize) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}?page=${page}&size=${pageSize}`);
-  if (!responseRaw.ok) {
-    throw new Error('게시글을 불러오는데 실패했습니다.');
-  }
-  return await responseRaw.json();
-};
