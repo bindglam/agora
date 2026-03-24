@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../constants';
 import { getUsernameInCookie } from './user';
 
 export const getTotalPosts = async (boardId) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/post-api/total-posts/${boardId}`);
+  const responseRaw = await fetch(`${API_BASE_URL}/post-api/total-posts/${boardId}?user=${getUsernameInCookie()}`);
   if (!responseRaw.ok) {
     throw new Error('게시글을 불러오는데 실패했습니다.');
   }
