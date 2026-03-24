@@ -1,5 +1,7 @@
 import { API_BASE_URL } from '../constants';
 
+import { getUsernameInCookie } from './user';
+
 export const getTotalPosts = async (boardId) => {
   const responseRaw = await fetch(`${API_BASE_URL}/post-api/total-posts/${boardId}`);
   if (!responseRaw.ok) {
@@ -8,23 +10,23 @@ export const getTotalPosts = async (boardId) => {
   return parseInt(await responseRaw.text());
 };
 
-export const getPosts = async (username, boardId, page, pageSize) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}?user=${username}&page=${page}&size=${pageSize}`);
+export const getPosts = async (boardId, page, pageSize) => {
+  const responseRaw = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}?user=${getUsernameInCookie()}&page=${page}&size=${pageSize}`);
   if (!responseRaw.ok) {
     throw new Error('게시글 목록을 불러오는데 실패했습니다.');
   }
   return await responseRaw.json();
 };
 
-export const getPost = async (username, postId) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/post-api/post/${postId}?user=${username}`);
+export const getPost = async (postId) => {
+  const responseRaw = await fetch(`${API_BASE_URL}/post-api/post/${postId}?user=${getUsernameInCookie()}`);
   if (!responseRaw.ok) {
     throw new Error('게시글을 불러오는데 실패했습니다.');
   }
   return await responseRaw.json();
 };
 
-export const createPost = async (title, content, boardId, authorUsername) => {
+export const createPost = async (title, content, boardId) => {
   const responseRaw = await fetch(`${API_BASE_URL}/post-api/post`, {
     method: 'POST',
     headers: {
@@ -34,7 +36,7 @@ export const createPost = async (title, content, boardId, authorUsername) => {
       title: title,
       content: content,
       boardId: boardId,
-      authorUsername: authorUsername,
+      authorUsername: getUsernameInCookie(),
     }),
   });
   if (!responseRaw.ok) {
@@ -45,7 +47,6 @@ export const createPost = async (title, content, boardId, authorUsername) => {
 
   if(response.errorMessage) {
     throw new Error('게시글 작성에 실패했습니다. 사유: ' + response.errorMessage);
-    return;
   }
 
   if(response.censorResult.good === false) {

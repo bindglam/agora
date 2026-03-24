@@ -35,7 +35,7 @@ function Board() {
         setBoardProperties(boardData.properties);
 
         setTotalCount(await getTotalPosts(boardId));
-        setPosts(await getPosts(getUsernameInCookie(), boardId, page, pageSize));
+        setPosts(await getPosts(boardId, page, pageSize));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -64,7 +64,7 @@ function Board() {
     }
 
     try {
-      const response = await createPost(postData.title, postData.content, boardId, username);
+      const response = await createPost(postData.title, postData.content, boardId);
 
       setPage(0);
     } catch (err) {

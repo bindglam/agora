@@ -19,7 +19,7 @@ function Post() {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const post = await getPost(getUsernameInCookie(), postId);
+        const post = await getPost(postId);
         setPost(post);
       } catch (err) {
         setError(err.message);
