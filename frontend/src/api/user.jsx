@@ -55,3 +55,21 @@ export const createUser = async (username) => {
 
   return response.user;
 };
+
+export const UserPermission = {
+  DEFAULT: { name: 'DEFAULT', parent: null },
+  ADMIN: { name: 'ADMIN', parent: 'DEFAULT', level: 1 },
+};
+Object.freeze(UserPermission);
+
+export const hasPermission = (userPermission, requiredPermission) => {
+  if (userPermission.name === requiredPermission.name) {
+    return true;
+  }
+
+  if(userPermission.parent === null) {
+    return false;
+  }
+
+  return hasPermission(UserPermission[userPermission.parent], requiredPermission);
+};
