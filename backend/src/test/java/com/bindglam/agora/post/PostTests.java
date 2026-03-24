@@ -20,7 +20,7 @@ class PostTests {
 
     @Test
     void testPost() {
-        System.out.println("------테스트 계정 생성------");
+        /*System.out.println("------테스트 계정 생성------");
         User testUser = userRepository.save(User.builder()
                 .username("테스트 유저")
                 .permission(UserPermission.DEFAULT)
@@ -50,6 +50,6 @@ class PostTests {
         postRepository.findAll().stream().map(Post::toDTO).forEach(post -> {
             System.out.println(post.toString());
         });
-        System.out.println("------게시물 로드 테스트 완료------");
+        System.out.println("------게시물 로드 테스트 완료------");*/
     }
 }

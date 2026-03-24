@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Builder
 public final class User implements Identified {
     @Id
-    @Column(columnDefinition = "TEXT", length = 20)
+    @Column(columnDefinition = "NVARCHAR", length = 20)
     private String username;
 
     private UserPermission permission;
