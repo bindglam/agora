@@ -8,6 +8,11 @@ import { getTotalPosts, getPosts, createPost } from '../api/post';
 import './Board.css';
 import WritePostModal from '../components/WritePostModal';
 
+const truncateText = (text, maxLength) => {
+  if (!text) return text;
+  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+};
+
 function Board() {
   const { boardId } = useParams();
   const navigate = useNavigate();
@@ -140,9 +145,9 @@ function Board() {
                   className="board-row"
                   onClick={() => handlePostClick(post.postId)}
                 >
-                  <td className="col-title">{post.title}</td>
-                  <td className="col-content">{post.content}</td>
-                  <td className="col-author">{post.author.username}</td>
+                  <td className="col-title"><span className="text-truncate">{truncateText(post.title, 10)}</span></td>
+                  <td className="col-content"><span className="text-truncate">{truncateText(post.content, 10)}</span></td>
+                  <td className="col-author"><span className="text-truncate">{truncateText(post.author.username, 10)}</span></td>
                   <td className="col-date">
                     {new Date(post.createdAt).toLocaleDateString()}
                   </td>

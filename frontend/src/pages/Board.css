@@ -70,10 +70,21 @@
 
 .col-title {
   width: auto;
+  max-width: 200px;
+}
+
+.col-content {
+  max-width: 300px;
 }
 
 .col-author {
   width: 150px;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .col-date {
