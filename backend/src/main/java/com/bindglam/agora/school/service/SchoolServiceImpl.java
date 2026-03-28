@@ -3,6 +3,7 @@ package com.bindglam.agora.school.service;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.bindglam.agora.school.MealMenu;
 import com.bindglam.agora.school.Timetable;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,47 @@ public final class SchoolServiceImpl implements SchoolService {
             Collections.sort(times);
 
             return new Timetable(times);
+        });
+    }
+
+    @Override
+    public @NonNull CompletableFuture<@NonNull MealMenu> getMealMenu(@NonNull LocalDate date) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<MealMenu.Meal> meals = new ArrayList<>();
+
+            String MLSV_YMD = date.format(DATE_TIME_FORMATTER); // 급식일자
+
+            URI uri = URI.create(API_BASE_URL + "/mealServiceDietInfo?KEY=" + API_KEY + "&Type=json&ATPT_OFCDC_SC_CODE=" + ATPT_OFCDC_SC_CODE + "&SD_SCHUL_CODE=" + SD_SCHUL_CODE
+                    + "&=MLSV_YMD=" + MLSV_YMD);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(uri)
+                    .GET()
+                    .build();
+
+            try {
+                HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() != 200) {
+                    throw new IOException("HTTP GET request failed with response code " + response.statusCode());
+                }
+
+                JSONObject body = JSON.parseObject(response.body());
+
+                JSONObject mealMenuRaw = body.getJSONArray("mealServiceDietInfo").getJSONObject(1).getJSONArray("row").getJSONObject(0);
+                String[] mealsRaw = mealMenuRaw.getString("DDISH_NM").split("<br/>");
+                for(String mealRaw : mealsRaw) {
+                    meals.add(
+                            MealMenu.Meal.builder()
+                                    .name(mealRaw)
+                                    .build()
+                    );
+                }
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            return new MealMenu(meals);
         });
     }
 }

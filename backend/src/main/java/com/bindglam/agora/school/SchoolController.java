@@ -15,7 +15,12 @@ public final class SchoolController {
     private final SchoolService schoolService;
 
     @GetMapping(value = "/timetable")
-    public ResponseEntity<Timetable> getPost(@DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
+    public ResponseEntity<Timetable> getTimetable(@DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
         return ResponseEntity.ok(schoolService.getTimetable(date).join());
+    }
+
+    @GetMapping(value = "/mealmenu")
+    public ResponseEntity<MealMenu> getMealMenu(@DateTimeFormat(pattern = "yyyyMMdd") LocalDate date) {
+        return ResponseEntity.ok(schoolService.getMealMenu(date).join());
     }
 }
