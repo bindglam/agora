@@ -42,7 +42,7 @@ export const createPost = async (title, content, boardId) => {
   if (!responseRaw.ok) {
     throw new Error('게시글을 작성하는데 실패했습니다.');
   }
-  
+
   const response = await responseRaw.json();
 
   if(response.errorMessage) {
@@ -51,6 +51,35 @@ export const createPost = async (title, content, boardId) => {
 
   if(response.censorResult && response.censorResult.good === false) {
     throw new Error('게시글에 부적절한 내용이 포함되어 있습니다. 수정 후 다시 시도해주세요.\n사유: ' + response.censorResult.reason);
+  }
+
+  return response;
+};
+
+export const createComment = async (postId, content) => {
+  const responseRaw = await fetch(`${API_BASE_URL}/post-api/post/comment`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      postId: postId,
+      content: content,
+      authorUsername: getUsernameInCookie(),
+    }),
+  });
+  if (!responseRaw.ok) {
+    throw new Error('댓글을 작성하는데 실패했습니다.');
+  }
+
+  const response = await responseRaw.json();
+
+  if(response.errorMessage) {
+    throw new Error('댓글 작성에 실패했습니다. 사유: ' + response.errorMessage);
+  }
+
+  if(response.censorResult && response.censorResult.good === false) {
+    throw new Error('댓글에 부적절한 내용이 포함되어 있습니다. 수정 후 다시 시도해주세요.\n사유: ' + response.censorResult.reason);
   }
 
   return response;
