@@ -49,7 +49,7 @@ export const createPost = async (title, content, boardId) => {
     throw new Error('게시글 작성에 실패했습니다. 사유: ' + response.errorMessage);
   }
 
-  if(response.censorResult.good === false) {
+  if(response.censorResult && response.censorResult.good === false) {
     throw new Error('게시글에 부적절한 내용이 포함되어 있습니다. 수정 후 다시 시도해주세요.\n사유: ' + response.censorResult.reason);
   }
 
