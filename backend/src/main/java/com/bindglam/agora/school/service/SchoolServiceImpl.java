@@ -3,6 +3,7 @@ package com.bindglam.agora.school.service;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
 import com.bindglam.agora.school.MealMenu;
 import com.bindglam.agora.school.Timetable;
 import org.jspecify.annotations.NonNull;
@@ -90,7 +91,7 @@ public final class SchoolServiceImpl implements SchoolService {
             String MLSV_YMD = date.format(DATE_TIME_FORMATTER); // 급식일자
 
             URI uri = URI.create(API_BASE_URL + "/mealServiceDietInfo?KEY=" + API_KEY + "&Type=json&ATPT_OFCDC_SC_CODE=" + ATPT_OFCDC_SC_CODE + "&SD_SCHUL_CODE=" + SD_SCHUL_CODE
-                    + "&=MLSV_YMD=" + MLSV_YMD);
+                    + "&MLSV_YMD=" + MLSV_YMD + "&MLSV_FROM_YMD=" + MLSV_YMD + "&MLSV_TO_YMD=" + MLSV_YMD);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(uri)
