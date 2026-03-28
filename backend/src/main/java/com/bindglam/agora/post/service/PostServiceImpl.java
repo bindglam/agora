@@ -4,6 +4,7 @@ import com.bindglam.agora.board.Board;
 import com.bindglam.agora.post.Post;
 import com.bindglam.agora.post.PostDTO;
 import com.bindglam.agora.post.PostVisibility;
+import com.bindglam.agora.post.censor.GeminiServer;
 import com.bindglam.agora.post.repository.PostRepository;
 import com.bindglam.agora.post.PostRequests;
 import com.bindglam.agora.post.censor.CensorResult;
@@ -31,7 +32,7 @@ public final class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
-    private final CensorServer censorServer = new LocalCensorServer();
+    private final CensorServer censorServer = new GeminiServer();
 
     @Override
     public Optional<PostDTO> getPost(@NonNull UserDTO user, long postId) {
@@ -78,14 +79,23 @@ public final class PostServiceImpl implements PostService {
                 .author(user)
                 .visibility(PostVisibility.PUBLIC)
                 .build();
-        CensorResult censorResult = censorServer.tryCensor(postDTO).join();
+        if(board.properties().isTryCensor()) {
+            CensorResult censorResult = censorServer.tryCensor(postDTO).join();
 
-        if(censorResult.isGood())
+            if (censorResult.isGood())
+                postDTO = postRepository.save(postDTO.toEntity()).toDTO();
+
+            return PostRequests.Create.Response.builder()
+                    .post(postDTO)
+                    .censorResult(censorResult)
+                    .build();
+        } else {
             postDTO = postRepository.save(postDTO.toEntity()).toDTO();
 
-        return PostRequests.Create.Response.builder()
-                .post(postDTO)
-                .censorResult(censorResult)
-                .build();
+            return PostRequests.Create.Response.builder()
+                    .post(postDTO)
+                    .censorResult(null)
+                    .build();
+        }
     }
 }

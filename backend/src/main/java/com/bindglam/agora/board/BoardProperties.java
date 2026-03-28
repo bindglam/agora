@@ -12,6 +12,8 @@ public final class BoardProperties {
     private final String displayName;
     private final String description;
     @Builder.Default
+    private final boolean tryCensor = true;
+    @Builder.Default
     private final Permissions permissions = Permissions.builder().build();
 
 
