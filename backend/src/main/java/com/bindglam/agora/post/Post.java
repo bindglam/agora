@@ -43,6 +43,7 @@ public final class Post implements Censorable {
     private PostVisibility visibility;
 
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     @Override

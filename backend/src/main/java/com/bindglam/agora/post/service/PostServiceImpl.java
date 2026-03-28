@@ -63,37 +63,37 @@ public final class PostServiceImpl implements PostService {
         if(board == null)
             return PostRequests.Create.Response.builder().errorMessage("알 수 없는 게시판입니다.").build();
 
-        UserDTO user = userService.getUser(request.authorUsername()).orElse(null);
-        if(user == null)
+        UserDTO userDTO = userService.getUser(request.authorUsername()).orElse(null);
+        if(userDTO == null)
             return PostRequests.Create.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
+        User user = userDTO.toEntity();
 
-        if(!user.permission().check(board.properties().getPermissions().getPosting()))
+        if(!user.getPermission().check(board.properties().getPermissions().getPosting()))
             return PostRequests.Create.Response.builder().errorMessage("권한이 없습니다.").build();
 
-        PostDTO postDTO = PostDTO.builder()
+        Post post = Post.builder()
                 .title(request.title())
                 .content(request.content())
                 .boardId(request.boardId())
                 .createdAt(LocalDateTime.now())
                 .author(user)
                 .visibility(PostVisibility.PUBLIC)
-                .comments(new ArrayList<>())
                 .build();
         if(board.properties().isTryCensor()) {
-            CensorResult censorResult = censorServer.tryCensor(postDTO).join();
+            CensorResult censorResult = censorServer.tryCensor(post).join();
 
             if (censorResult.isGood())
-                postDTO = postRepository.save(postDTO.toEntity()).toDTO();
+                post = postRepository.save(post);
 
             return PostRequests.Create.Response.builder()
-                    .post(postDTO)
+                    .post(post.toDTO())
                     .censorResult(censorResult)
                     .build();
         } else {
-            postDTO = postRepository.save(postDTO.toEntity()).toDTO();
+            post = postRepository.save(post);
 
             return PostRequests.Create.Response.builder()
-                    .post(postDTO)
+                    .post(post.toDTO())
                     .censorResult(null)
                     .build();
         }
