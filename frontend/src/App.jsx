@@ -8,6 +8,7 @@ import './App.css';
 import Home from "./pages/Home";
 import Board from "./pages/Board";
 import Post from "./pages/Post";
+import School from "./pages/School";
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -65,6 +66,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/board/:boardId" element={<Board />} />
             <Route path="/post/:postId" element={<Post />} />
+            <Route path="/school" element={<School />} />
           </Routes>
         </div>
         <Footer />

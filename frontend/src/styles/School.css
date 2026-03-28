@@ -1,0 +1,505 @@
+.school-page {
+  max-width: 100%;
+}
+
+.school-page .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.school-page .page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4c1d95;
+  margin: 0;
+}
+
+.school-page .week-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.school-page .btn-nav {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.school-page .btn-nav:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.school-page .btn-nav:not(:disabled):hover {
+  border-color: #7c3aed;
+  color: #7c3aed;
+  background: #f9f9ff;
+}
+
+.school-page .week-label {
+  padding: 0 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  min-width: 200px;
+  text-align: center;
+}
+
+.school-page .school-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.school-page .section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.school-page .section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4c1d95;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.school-page .loading,
+.school-page .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.school-page .loading {
+  color: #7c3aed;
+}
+
+.school-page .error {
+  color: #dc2626;
+  background: #fee2e2;
+  border-radius: 8px;
+}
+
+/* 주간 시간표 테이블 */
+.school-page .weekly-timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  table-layout: fixed;
+  min-width: 600px;
+}
+
+.school-page .timetable-section {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.school-page .weekly-timetable-table thead {
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+  color: white;
+}
+
+.school-page .weekly-timetable-table th {
+  padding: 1rem 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.school-page .weekly-timetable-table th.corner-header {
+  width: 80px;
+  background: rgba(76, 29, 149, 0.9);
+}
+
+.school-page .weekly-timetable-table .day-header {
+  min-width: 100px;
+}
+
+.school-page .weekly-timetable-table .day-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.school-page .weekly-timetable-table .day-date {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  display: block;
+}
+
+.school-page .weekly-timetable-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.school-page .weekly-timetable-table tbody tr:hover {
+  background: #f9f9ff;
+}
+
+.school-page .weekly-timetable-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.school-page .weekly-timetable-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border: 1px solid #e8e8e8;
+  font-size: 0.95rem;
+  word-break: keep-all;
+}
+
+.school-page .weekly-timetable-table td.period-cell {
+  background: #f8f8ff;
+  font-weight: 600;
+  color: #4c1d95;
+  width: 80px;
+}
+
+.school-page .weekly-timetable-table td.subject-cell {
+  color: #333;
+  min-height: 40px;
+}
+
+/* 주간 급식표 */
+.school-page .weekly-meals-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+}
+
+.school-page .weekly-meals-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.school-page .weekly-meals-container::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+.school-page .weekly-meals-container::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 3px;
+}
+
+.school-page .weekly-meals-container::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+.school-page .meal-day-card {
+  background: #f9f9ff;
+  border: 2px solid #e8e8ff;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 250px;
+  min-width: 200px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.school-page .meal-day-card:hover {
+  border-color: #7c3aed;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+}
+
+.school-page .meal-day-card.selected {
+  background: white;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.school-page .meal-day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e8e8ff;
+}
+
+.school-page .meal-day-header .day-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.school-page .meal-day-header .day-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.school-page .meal-items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.school-page .meal-item {
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.school-page .meal-day-card.selected .meal-item {
+  background: #f0f0ff;
+}
+
+.school-page .no-meal {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 1rem;
+}
+
+.school-page .meal-more {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #7c3aed;
+  font-weight: 600;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.school-page .meal-more:hover {
+  background: rgba(124, 58, 237, 0.1);
+}
+
+.school-page .meal-more:active {
+  background: rgba(124, 58, 237, 0.2);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .school-page .weekly-timetable-table th,
+  .school-page .weekly-timetable-table td {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.85rem;
+  }
+
+  .school-page .weekly-timetable-table .day-name {
+    font-size: 1rem;
+  }
+
+  .school-page .weekly-timetable-table .day-date {
+    font-size: 0.8rem;
+  }
+
+  .school-page .meal-day-card {
+    padding: 0.75rem;
+    min-height: 230px;
+    min-width: 180px;
+    max-width: 200px;
+  }
+
+  .school-page .meal-day-header .day-name {
+    font-size: 1rem;
+  }
+
+  .school-page .meal-section::after {
+    content: "← 급식표를 좌우로 스크롤하세요 →";
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #ddd;
+  }
+}
+
+@media (max-width: 768px) {
+  .school-page .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .school-page .page-header h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .school-page .week-selector {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .school-page .week-label {
+    min-width: auto;
+    padding: 0.5rem 1rem;
+    order: -1;
+    width: 100%;
+  }
+
+  .school-page .section {
+    padding: 1rem;
+  }
+
+  .school-page .section h2 {
+    font-size: 1.2rem;
+  }
+
+  .school-page .weekly-timetable-table {
+    font-size: 0.75rem;
+  }
+
+  .school-page .weekly-timetable-table th,
+  .school-page .weekly-timetable-table td {
+    padding: 0.4rem 0.2rem;
+  }
+
+  .school-page .weekly-timetable-table th.corner-header,
+  .school-page .weekly-timetable-table td.period-cell {
+    width: 50px;
+    font-size: 0.8rem;
+  }
+
+  .school-page .weekly-timetable-table .day-name {
+    font-size: 0.9rem;
+  }
+
+  .school-page .weekly-timetable-table .day-date {
+    font-size: 0.75rem;
+  }
+
+  .school-page .weekly-meals-container {
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .school-page .meal-day-card {
+    padding: 0.75rem;
+    min-height: 210px;
+    min-width: 160px;
+    max-width: 180px;
+  }
+
+  .school-page .meal-day-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .school-page .meal-day-header .day-name {
+    font-size: 1rem;
+  }
+
+  .school-page .meal-day-header .day-date {
+    font-size: 0.85rem;
+  }
+
+  .school-page .meal-item {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .school-page .meal-more {
+    font-size: 0.8rem;
+  }
+
+  /* 시간표에 가로 스크롤 힌트 추가 */
+  .school-page .timetable-section::after {
+    content: "← 시간표를 좌우로 스크롤하세요 →";
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #ddd;
+  }
+}
+
+@media (max-width: 480px) {
+  .school-page .weekly-meals-container {
+    gap: 0.5rem;
+  }
+
+  .school-page .meal-day-card {
+    min-height: 190px;
+    min-width: 140px;
+    max-width: 160px;
+    padding: 0.6rem;
+  }
+
+  .school-page .meal-day-header .day-name {
+    font-size: 0.9rem;
+  }
+
+  .school-page .meal-day-header .day-date {
+    font-size: 0.8rem;
+  }
+
+  .school-page .meal-item {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .school-page .meal-more {
+    font-size: 0.75rem;
+  }
+
+  /* 시간표는 가로 스크롤 유지하되 글자 크기 적절하게 유지 */
+  .school-page .weekly-timetable-table {
+    font-size: 0.8rem;
+    min-width: 500px;
+  }
+
+  .school-page .weekly-timetable-table th,
+  .school-page .weekly-timetable-table td {
+    padding: 0.5rem 0.4rem;
+    min-width: 50px;
+  }
+
+  .school-page .weekly-timetable-table th.corner-header,
+  .school-page .weekly-timetable-table td.period-cell {
+    width: 60px;
+    font-size: 0.85rem;
+  }
+
+  .school-page .weekly-timetable-table .day-name {
+    font-size: 0.9rem;
+  }
+
+  .school-page .weekly-timetable-table .day-date {
+    font-size: 0.75rem;
+    display: block;
+  }
+
+  .school-page .weekly-timetable-table td.subject-cell {
+    font-size: 0.8rem;
+    min-height: 45px;
+    word-break: keep-all;
+  }
+}

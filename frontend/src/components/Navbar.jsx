@@ -33,7 +33,7 @@ function Navbar() {
           <li><a href="/board/announcements">공지사항</a></li>
           <li><a href="/board/free">자유게시판</a></li>
           <li><a href="/schedule">학급일정</a></li>
-          <li><a href="/timetable">시간표</a></li>
+          <li><a href="/school">시간표/급식</a></li>
         </ul>
       </div>
     </nav>
