@@ -129,7 +129,8 @@ function Board() {
         <div className="no-posts">게시글이 없습니다.</div>
       ) : (
         <>
-          <table className="board-table">
+          <div className="board-table-wrapper">
+            <table className="board-table">
             <thead>
               <tr>
                 <th className="col-title">제목</th>
@@ -156,29 +157,30 @@ function Board() {
               ))}
             </tbody>
           </table>
-
-          {totalCount > 0 && (
-            <div className="pagination">
-              <button
-                className="pagination-btn"
-                onClick={handlePreviousPage}
-                disabled={page === 0}
-              >
-                이전
-              </button>
-              <span className="pagination-info">
-                {page + 1} / {Math.max(1, Math.ceil(totalCount / pageSize))}
-              </span>
-              <button
-                className="pagination-btn"
-                onClick={handleNextPage}
-                disabled={page >= Math.ceil(totalCount / pageSize) - 1}
-              >
-                다음
-              </button>
-            </div>
-          )}
+          </div>
         </>
+      )}
+
+      {totalCount > 0 && (
+        <div className="pagination">
+          <button
+            className="pagination-btn"
+            onClick={handlePreviousPage}
+            disabled={page === 0}
+          >
+            이전
+          </button>
+          <span className="pagination-info">
+            {page + 1} / {Math.max(1, Math.ceil(totalCount / pageSize))}
+          </span>
+          <button
+            className="pagination-btn"
+            onClick={handleNextPage}
+            disabled={page >= Math.ceil(totalCount / pageSize) - 1}
+          >
+            다음
+          </button>
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 /* 전역 설정 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap');
 
 * {
   margin: 0;
@@ -9,8 +9,8 @@
 
 body {
   font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-  color: #333;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecff 50%, #e4e8ec 100%);
+  color: #1a202c;
   line-height: 1.6;
   min-height: 100vh;
 }
@@ -26,27 +26,45 @@ body {
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 2rem 3rem 2rem;
+  padding: 2.5rem 2rem 3rem 2rem;
   width: 100%;
 }
 
 /* 버튼 스타일 */
 .btn {
   display: inline-block;
-  padding: 0.9rem 2rem;
+  padding: 1rem 2.2rem;
   border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
   color: white;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
 }
 
 .btn-primary:hover {
@@ -54,25 +72,37 @@ body {
   box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
 }
 
+.btn-primary:active {
+  transform: translateY(0);
+}
+
 .btn-secondary {
   background: white;
   color: #4c1d95;
   border: 2px solid #4c1d95;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .btn-secondary:hover {
-  background: #4c1d95;
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
   color: white;
+  border-color: transparent;
   transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
 }
 
 /* 카드 스타일 */
 .card {
   background: white;
-  border-radius: 16px;
-  padding: 2rem;
+  border-radius: 20px;
+  padding: 2.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #f0f0f0;
 }
 
 .card:hover {
@@ -81,15 +111,20 @@ body {
 }
 
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: #4c1d95;
   margin-bottom: 1rem;
+  background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .card-content {
-  color: #555;
+  color: #4a5568;
   line-height: 1.8;
+  font-size: 1.05rem;
 }
 
 /* 애니메이션 */
@@ -144,18 +179,28 @@ body {
   }
 
   .main-content {
-    padding: 1.5rem 1.5rem 2rem 1.5rem;
+    padding: 2rem 1.5rem 2.5rem 1.5rem;
+  }
+
+  .btn {
+    padding: 0.9rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  .card {
+    padding: 2rem;
   }
 }
 
 /* 포커스 스타일 */
-a:focus, button:focus {
+a:focus,
+button:focus {
   outline: 2px solid #7c3aed;
   outline-offset: 2px;
 }
 
 /* 선택 스타일 */
 ::selection {
-  background: #7c3aed;
+  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
   color: white;
 }
