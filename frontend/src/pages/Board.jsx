@@ -70,7 +70,8 @@ function Board() {
     try {
       const response = await createPost(postData.title, postData.content, boardId);
 
-      setPage(0);
+      //setPage(0);
+      setPosts([response.post, ...posts]);
     } catch (err) {
       alert(err.message);
       throw err;
