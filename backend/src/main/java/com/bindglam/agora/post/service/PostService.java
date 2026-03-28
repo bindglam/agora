@@ -12,9 +12,11 @@ import java.util.Optional;
 public interface PostService {
     Optional<PostDTO> getPost(@NonNull UserDTO user, long postId);
 
-    Streamable<PostDTO> getPostsByBoardId(@NonNull UserDTO user, String boardId, int page, int size);
+    Streamable<PostDTO> getPostsByBoardId(@NonNull UserDTO user, @NonNull String boardId, int page, int size);
 
-    int getTotalPosts(@NonNull UserDTO user, String boardId);
+    int getTotalPosts(@NonNull UserDTO user, @NonNull String boardId);
 
     PostRequests.Create.@NonNull Response createPost(PostRequests.@NonNull Create request);
+
+    PostRequests.Comment.@NonNull Response createComment(PostRequests.@NonNull Comment request);
 }

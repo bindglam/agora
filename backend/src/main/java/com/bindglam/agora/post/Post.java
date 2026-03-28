@@ -1,14 +1,17 @@
 package com.bindglam.agora.post;
 
 import com.bindglam.agora.board.Board;
+import com.bindglam.agora.post.censor.Censorable;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import com.bindglam.agora.user.User;
-import com.bindglam.agora.utils.Identified;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "post")
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public final class Post implements Identified {
+public final class Post implements Censorable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Builder.Default
@@ -39,9 +42,17 @@ public final class Post implements Identified {
 
     private PostVisibility visibility;
 
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
     @Override
-    public @NonNull String id() {
-        return String.valueOf(id);
+    public @Nullable String title() {
+        return title;
+    }
+
+    @Override
+    public @NonNull String content() {
+        return content;
     }
 
     public @NonNull Board getBoard() {
@@ -57,6 +68,7 @@ public final class Post implements Identified {
                 .createdAt(createdAt)
                 .author(author.toDTO())
                 .visibility(visibility)
+                .comments(new ArrayList<>(comments.stream().map(Comment::toDTO).toList()))
                 .build();
     }
 }

@@ -1,12 +1,13 @@
 package com.bindglam.agora.post;
 
-import com.bindglam.agora.user.User;
+import com.bindglam.agora.post.censor.Censorable;
 import com.bindglam.agora.user.UserDTO;
-import com.bindglam.agora.utils.Identified;
 import lombok.Builder;
 import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 public record PostDTO(
@@ -16,14 +17,10 @@ public record PostDTO(
         String boardId,
         LocalDateTime createdAt,
         UserDTO author,
-        PostVisibility visibility
-) implements Identified {
-    @Override
-    public @NonNull String id() {
-        return String.valueOf(postId);
-    }
-
-    public Post toEntity() {
+        PostVisibility visibility,
+        List<CommentDTO> comments
+) implements Censorable {
+    public @NonNull Post toEntity() {
         return Post.builder()
                 .id(postId)
                 .title(title)
@@ -32,6 +29,7 @@ public record PostDTO(
                 .createdAt(createdAt)
                 .author(author.toEntity())
                 .visibility(visibility)
+                .comments(new ArrayList<>(comments.stream().map(CommentDTO::toEntity).toList()))
                 .build();
     }
 }

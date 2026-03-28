@@ -17,9 +17,9 @@ public final class LocalCensorServer extends AIServer {
     private static final String MODEL_NAME = "qwen3.5:35b-a3b";
 
     @Override
-    public CompletableFuture<CensorResult> tryCensor(PostDTO post) {
+    public CompletableFuture<CensorResult> tryCensor(Censorable target) {
         return CompletableFuture.supplyAsync(() -> {
-            String prompt = createPrompt(post);
+            String prompt = createPrompt(target);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(SERVER_URI)

@@ -4,6 +4,7 @@ import com.bindglam.agora.post.PostDTO;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
+import java.util.Objects;
 
 public abstract class AIServer implements CensorServer {
     private static final String PROMPT_TEMPLATE =
@@ -25,16 +26,21 @@ public abstract class AIServer implements CensorServer {
             
             ---
             
-            제목: {post_title}
+            제목: {title}
             내용:
-            {post_content}
+            {content}
             """;
 
     protected static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(3))
             .build();
 
-    protected final String createPrompt(PostDTO post) {
-        return PROMPT_TEMPLATE.replace("{post_title}", post.title()).replace("{post_content}", post.content());
+    protected final String createPrompt(Censorable target) {
+        String result = PROMPT_TEMPLATE.replace("{content}", target.content());
+        if(target.title() != null)
+            result = result.replace("{title}", Objects.requireNonNull(target.title()));
+        else
+            result = result.replace("{title}", "(없음)");
+        return result;
     }
 }

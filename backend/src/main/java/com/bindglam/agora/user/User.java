@@ -1,6 +1,5 @@
 package com.bindglam.agora.user;
 
-import com.bindglam.agora.utils.Identified;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public final class User implements Identified {
+public final class User {
     @Id
     @Column(columnDefinition = "NVARCHAR", length = 20)
     private String username;
@@ -25,11 +24,6 @@ public final class User implements Identified {
     private UserPermission permission;
 
     private LocalDateTime createdAt;
-
-    @Override
-    public @NonNull String id() {
-        return username;
-    }
 
     public @NonNull UserDTO toDTO() {
         return UserDTO.builder()

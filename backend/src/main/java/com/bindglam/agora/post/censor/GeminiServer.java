@@ -20,9 +20,9 @@ public final class GeminiServer extends AIServer {
     private static final String API_KEY = "AIzaSyC1Sh4NhGf-KtkE7_HIJML0D7w7XElTzH8";
 
     @Override
-    public CompletableFuture<CensorResult> tryCensor(PostDTO post) {
+    public CompletableFuture<CensorResult> tryCensor(Censorable target) {
         return CompletableFuture.supplyAsync(() -> {
-            String prompt = createPrompt(post);
+            String prompt = createPrompt(target);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(SERVER_BASE_URL.replace("{model}", MODEL_NAME)))

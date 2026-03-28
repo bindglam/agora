@@ -17,4 +17,15 @@ public interface PostRequests {
             }
         }
     }
+
+    @Builder
+    record Comment(long postId, @NonNull String content, @NonNull String authorUsername) {
+        @Builder
+        public record Response(@Nullable CommentDTO comment, @Nullable CensorResult censorResult, @Nullable String errorMessage) implements Requests.Response {
+            @Override
+            public @Nullable String errorMessage() {
+                return errorMessage != null ? errorMessage : (censorResult == null ? null : (censorResult.isGood() ? null : censorResult.getReason()));
+            }
+        }
+    }
 }

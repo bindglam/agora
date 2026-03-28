@@ -67,4 +67,9 @@ public final class PostController {
     public ResponseEntity<PostRequests.Create.Response> createPost(@RequestBody PostRequests.Create request) {
         return ResponseEntity.ok(postService.createPost(request));
     }
+
+    @PostMapping(value = "/post/comment")
+    public ResponseEntity<PostRequests.Comment.Response> createComment(@RequestBody PostRequests.Comment request) {
+        return ResponseEntity.ok(postService.createComment(request));
+    }
 }

@@ -23,5 +23,8 @@ public final class BoardProperties {
     public static final class Permissions {
         @Builder.Default
         private final UserPermission posting = UserPermission.DEFAULT;
+
+        @Builder.Default
+        private final UserPermission comment = UserPermission.DEFAULT;
     }
 }

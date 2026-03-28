@@ -5,5 +5,5 @@ import com.bindglam.agora.post.PostDTO;
 import java.util.concurrent.CompletableFuture;
 
 public interface CensorServer {
-    CompletableFuture<CensorResult> tryCensor(PostDTO post);
+    CompletableFuture<CensorResult> tryCensor(Censorable target);
 }
