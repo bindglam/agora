@@ -133,7 +133,7 @@ function Board() {
             <thead>
               <tr>
                 <th className="col-title">제목</th>
-                <th className="col-content">내용</th>
+                {/*<th className="col-content">내용</th>*/}
                 <th className="col-author">작성자</th>
                 <th className="col-date">작성일</th>
                 {/*<th className="col-views">조회</th>*/}
@@ -146,8 +146,8 @@ function Board() {
                   className="board-row"
                   onClick={() => handlePostClick(post.postId)}
                 >
-                  <td className="col-title"><span className="text-truncate">{truncateText(post.title, 10)}</span></td>
-                  <td className="col-content"><span className="text-truncate">{truncateText(post.content, 10)}</span></td>
+                  <td className="col-title"><span className="text-truncate">{truncateText(post.title, 40)}</span></td>
+                  {/*<td className="col-content"><span className="text-truncate">{truncateText(post.content, 10)}</span></td>*/}
                   <td className="col-author"><span className="text-truncate">{truncateText(post.author.username, 10)}</span></td>
                   <td className="col-date">
                     {new Date(post.createdAt).toLocaleDateString()}
