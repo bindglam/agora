@@ -2,11 +2,9 @@ package com.bindglam.agora.post.service;
 
 import com.bindglam.agora.board.Board;
 import com.bindglam.agora.post.*;
-import com.bindglam.agora.post.censor.GeminiServer;
+import com.bindglam.agora.post.censor.*;
 import com.bindglam.agora.post.repository.CommentRepository;
 import com.bindglam.agora.post.repository.PostRepository;
-import com.bindglam.agora.post.censor.CensorResult;
-import com.bindglam.agora.post.censor.CensorServer;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import com.bindglam.agora.user.User;
 import com.bindglam.agora.user.UserDTO;
@@ -24,14 +22,24 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public final class PostServiceImpl implements PostService {
+    private final CensorServerConfig censorServerConfig;
+
     private final UserService userService;
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    private final CensorServer censorServer = new GeminiServer();
+    private final CensorServer censorServer;
+
+    public PostServiceImpl(CensorServerConfig censorServerConfig, UserService userService, PostRepository postRepository, CommentRepository commentRepository) {
+        this.censorServerConfig = censorServerConfig;
+        this.userService = userService;
+        this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
+
+        this.censorServer = CensorServerType.valueOf(this.censorServerConfig.getType()).create();
+    }
 
     @Override
     public Optional<PostDTO> getPost(@NonNull UserDTO user, long postId) {
