@@ -1,16 +1,15 @@
-package com.bindglam.agora.post.censor;
+package com.bindglam.agora.post.censor.server;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.bindglam.agora.post.PostDTO;
+import com.bindglam.agora.post.censor.CensorResult;
+import com.bindglam.agora.post.censor.Censorable;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 public final class GeminiServer extends AIServer {

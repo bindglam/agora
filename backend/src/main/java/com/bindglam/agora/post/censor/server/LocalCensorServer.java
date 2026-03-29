@@ -1,9 +1,10 @@
-package com.bindglam.agora.post.censor;
+package com.bindglam.agora.post.censor.server;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.bindglam.agora.post.PostDTO;
+import com.bindglam.agora.post.censor.CensorResult;
+import com.bindglam.agora.post.censor.Censorable;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public final class LocalCensorServer extends AIServer {
     private static final URI SERVER_URI = URI.create("http://192.168.0.181:8001/api/chat");
 
-    private static final String MODEL_NAME = "qwen3.5:35b-a3b";
+    private static final String MODEL_NAME = "nemotron-cascade-2:30b";
 
     @Override
     public CompletableFuture<CensorResult> tryCensor(Censorable target) {

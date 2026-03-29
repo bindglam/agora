@@ -1,6 +1,7 @@
-package com.bindglam.agora.post.censor;
+package com.bindglam.agora.post.censor.server;
 
-import com.bindglam.agora.post.PostDTO;
+import com.bindglam.agora.post.censor.CensorServer;
+import com.bindglam.agora.post.censor.Censorable;
 
 import java.net.http.HttpClient;
 import java.time.Duration;

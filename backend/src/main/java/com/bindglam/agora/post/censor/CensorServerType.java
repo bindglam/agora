@@ -1,5 +1,7 @@
 package com.bindglam.agora.post.censor;
 
+import com.bindglam.agora.post.censor.server.GeminiServer;
+import com.bindglam.agora.post.censor.server.LocalCensorServer;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
