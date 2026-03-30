@@ -1,5 +1,7 @@
-package com.bindglam.agora.school;
+package com.bindglam.agora.school.controller;
 
+import com.bindglam.agora.school.MealMenu;
+import com.bindglam.agora.school.Timetable;
 import com.bindglam.agora.school.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
