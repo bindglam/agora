@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import { getUsernameInCookie, setUsernameInCookie, resetUsernameInCookie, getCurrentUser, createUser } from './api/user';
+import { setUserKeyInCookie, resetUserKeyInCookie, getCurrentUser, createUser } from './api/user';
 
 import './App.css';
 
@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     getCurrentUser().then((user) => {
       if(user === null) {
-        resetUsernameInCookie();
+        resetUserKeyInCookie();
         setIsUserInfoModalOpen(true);
       }
     });
@@ -48,7 +48,7 @@ function App() {
     try {
       const response = await createUser(username);
 
-      setUsernameInCookie(username);
+      setUserKeyInCookie(response.key);
 
       setIsUserInfoModalOpen(false);
     } catch (err) {

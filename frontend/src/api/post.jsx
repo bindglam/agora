@@ -1,9 +1,9 @@
 import { API_BASE_URL } from '../constants';
 
-import { getUsernameInCookie } from './user';
+import { getUserKeyInCookie } from './user';
 
 export const getTotalPosts = async (boardId) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/post-api/total-posts/${boardId}?user=${getUsernameInCookie()}`);
+  const responseRaw = await fetch(`${API_BASE_URL}/post-api/total-posts/${boardId}?user=${getUserKeyInCookie()}`);
   if (!responseRaw.ok) {
     throw new Error('게시글을 불러오는데 실패했습니다.');
   }
@@ -11,7 +11,7 @@ export const getTotalPosts = async (boardId) => {
 };
 
 export const getPosts = async (boardId, page, pageSize) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}?user=${getUsernameInCookie()}&page=${page}&size=${pageSize}`);
+  const responseRaw = await fetch(`${API_BASE_URL}/post-api/posts/${boardId}?user=${getUserKeyInCookie()}&page=${page}&size=${pageSize}`);
   if (!responseRaw.ok) {
     throw new Error('게시글 목록을 불러오는데 실패했습니다.');
   }
@@ -19,7 +19,7 @@ export const getPosts = async (boardId, page, pageSize) => {
 };
 
 export const getPost = async (postId) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/post-api/post/${postId}?user=${getUsernameInCookie()}`);
+  const responseRaw = await fetch(`${API_BASE_URL}/post-api/post/${postId}?user=${getUserKeyInCookie()}`);
   if (!responseRaw.ok) {
     throw new Error('게시글을 불러오는데 실패했습니다.');
   }
@@ -36,7 +36,7 @@ export const createPost = async (title, content, boardId) => {
       title: title,
       content: content,
       boardId: boardId,
-      authorUsername: getUsernameInCookie(),
+      authorKey: getUserKeyInCookie(),
     }),
   });
   if (!responseRaw.ok) {
@@ -65,7 +65,7 @@ export const createComment = async (postId, content) => {
     body: JSON.stringify({
       postId: postId,
       content: content,
-      authorUsername: getUsernameInCookie(),
+      authorKey: getUserKeyInCookie(),
     }),
   });
   if (!responseRaw.ok) {

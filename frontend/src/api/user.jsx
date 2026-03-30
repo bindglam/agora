@@ -1,22 +1,22 @@
 import { API_BASE_URL } from '../constants';
 import { getCookie, setCookie } from '../utils';
 
-export const USERNAME_COOKIE_KEY = 'username';
+export const USERKEY_COOKIE_KEY = 'user_key';
 
-export const getUsernameInCookie = () => {
-  return getCookie(USERNAME_COOKIE_KEY);
+export const getUserKeyInCookie = () => {
+  return getCookie(USERKEY_COOKIE_KEY);
 };
 
-export const setUsernameInCookie = (username) => {
-  setCookie(USERNAME_COOKIE_KEY, username, 365);
+export const setUserKeyInCookie = (userKey) => {
+  setCookie(USERKEY_COOKIE_KEY, userKey, 365);
 };
 
-export const resetUsernameInCookie = () => {
-  setCookie(USERNAME_COOKIE_KEY, '', -1);
+export const resetUserKeyInCookie = () => {
+  setCookie(USERKEY_COOKIE_KEY, '', -1);
 };
 
-export const getUser = async (username) => {
-  const responseRaw = await fetch(`${API_BASE_URL}/user-api/user/${username}`);
+export const getUser = async (userKey) => {
+  const responseRaw = await fetch(`${API_BASE_URL}/user-api/user/${userKey}`);
   if (!responseRaw.ok) {
     return null;
   }
@@ -25,11 +25,11 @@ export const getUser = async (username) => {
 };
 
 export const getCurrentUser = async () => {
-  const username = getUsernameInCookie();
-  if(username === null) {
+  const userKey = getUserKeyInCookie();
+  if(userKey === null) {
     return null;
   }
-  return await getUser(username);
+  return await getUser(userKey);
 };
 
 export const createUser = async (username) => {

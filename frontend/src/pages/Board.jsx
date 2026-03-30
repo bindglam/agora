@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { getCurrentUser, getUsernameInCookie, UserPermission, hasPermission } from '../api/user';
+import { getUser, getCurrentUser, getUserKeyInCookie, UserPermission, hasPermission } from '../api/user';
 import { getBoard } from '../api/board';
 import { getTotalPosts, getPosts, createPost } from '../api/post';
 
@@ -61,8 +61,8 @@ function Board() {
   };
 
   const handleWriteSubmit = async (postData) => {
-    const username = getUsernameInCookie();
-    if (!username) {
+    const userKey = getUserKeyInCookie();
+    if (!userKey) {
       alert('유저 정보 등록이 필요합니다.');
       return;
     }
