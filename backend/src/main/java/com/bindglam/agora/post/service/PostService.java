@@ -1,20 +1,24 @@
 package com.bindglam.agora.post.service;
 
-import com.bindglam.agora.post.PostDTO;
+import com.bindglam.agora.post.DefaultPostDTO;
 import com.bindglam.agora.post.PostRequests;
-import com.bindglam.agora.user.UserDTO;
+import com.bindglam.agora.post.SecurePostDTO;
+import com.bindglam.agora.user.DefaultUserDTO;
+import org.hibernate.Internal;
 import org.jspecify.annotations.NonNull;
-import org.springframework.data.domain.Page;
 import org.springframework.data.util.Streamable;
 
 import java.util.Optional;
 
 public interface PostService {
-    Optional<PostDTO> getPost(@NonNull UserDTO user, long postId);
+    @Internal
+    Optional<DefaultPostDTO> getPostInternal(@NonNull DefaultUserDTO user, long postId);
 
-    Streamable<PostDTO> getPostsByBoardId(@NonNull UserDTO user, @NonNull String boardId, int page, int size);
+    Optional<SecurePostDTO> getPost(@NonNull DefaultUserDTO user, long postId);
 
-    int getTotalPosts(@NonNull UserDTO user, @NonNull String boardId);
+    Streamable<SecurePostDTO> getPostsByBoardId(@NonNull DefaultUserDTO user, @NonNull String boardId, int page, int size);
+
+    int getTotalPosts(@NonNull DefaultUserDTO user, @NonNull String boardId);
 
     PostRequests.Create.@NonNull Response createPost(PostRequests.@NonNull Create request);
 

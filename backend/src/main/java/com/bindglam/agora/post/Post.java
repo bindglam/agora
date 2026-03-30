@@ -37,7 +37,7 @@ public final class Post implements Censorable {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "author_username")
+    @JoinColumn(name = "author_key")
     private User author;
 
     private PostVisibility visibility;
@@ -60,8 +60,8 @@ public final class Post implements Censorable {
         return BuiltInRegistries.BOARDS.getOrThrow(boardId);
     }
 
-    public @NonNull PostDTO toDTO() {
-        return PostDTO.builder()
+    public @NonNull DefaultPostDTO toDTO() {
+        return DefaultPostDTO.builder()
                 .postId(id)
                 .title(title)
                 .content(content)

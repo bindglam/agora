@@ -1,11 +1,12 @@
 package com.bindglam.agora.post.controller;
 
 import com.bindglam.agora.board.Board;
-import com.bindglam.agora.post.PostDTO;
+import com.bindglam.agora.post.DefaultPostDTO;
 import com.bindglam.agora.post.PostRequests;
+import com.bindglam.agora.post.SecurePostDTO;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import com.bindglam.agora.post.service.PostService;
-import com.bindglam.agora.user.UserDTO;
+import com.bindglam.agora.user.DefaultUserDTO;
 import com.bindglam.agora.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/post-api")
@@ -22,8 +24,8 @@ public final class PostController {
     private final UserService userService;
 
     @GetMapping(value = "/post/{postId}")
-    public ResponseEntity<PostDTO> getPost(@RequestParam(name = "user") String username, @PathVariable long postId) {
-        UserDTO user = userService.getUser(username).orElse(null);
+    public ResponseEntity<SecurePostDTO> getPost(@RequestParam(name = "user") String userKey, @PathVariable long postId) {
+        DefaultUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
         if(user == null)
             return ResponseEntity.notFound().build();
 
@@ -31,8 +33,8 @@ public final class PostController {
     }
 
     @GetMapping(value = "/posts/{boardId}")
-    public ResponseEntity<List<PostDTO>> getPosts(@RequestParam(name = "user") String username, @PathVariable String boardId, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="size", defaultValue="20") int size) {
-        UserDTO user = userService.getUser(username).orElse(null);
+    public ResponseEntity<List<SecurePostDTO>> getPosts(@RequestParam(name = "user") String userKey, @PathVariable String boardId, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="size", defaultValue="20") int size) {
+        DefaultUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
         if(user == null)
             return ResponseEntity.notFound().build();
 
@@ -49,8 +51,8 @@ public final class PostController {
     }
 
     @GetMapping(value = "/total-posts/{boardId}")
-    public ResponseEntity<Integer> getTotalPosts(@RequestParam(name = "user") String username, @PathVariable String boardId) {
-        UserDTO user = userService.getUser(username).orElse(null);
+    public ResponseEntity<Integer> getTotalPosts(@RequestParam(name = "user") String userKey, @PathVariable String boardId) {
+        DefaultUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
         if(user == null)
             return ResponseEntity.notFound().build();
 

@@ -30,7 +30,7 @@ public final class Comment implements Censorable {
     private Long postId;
 
     @ManyToOne
-    @JoinColumn(name = "author_username")
+    @JoinColumn(name = "author_key")
     private User author;
 
     @Override
@@ -43,8 +43,8 @@ public final class Comment implements Censorable {
         return content;
     }
 
-    public @NonNull CommentDTO toDTO() {
-        return CommentDTO.builder()
+    public @NonNull DefaultCommentDTO toDTO() {
+        return DefaultCommentDTO.builder()
                 .id(id)
                 .content(content)
                 .createdAt(createdAt)

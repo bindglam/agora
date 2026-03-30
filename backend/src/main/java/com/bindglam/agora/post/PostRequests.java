@@ -8,9 +8,9 @@ import org.jspecify.annotations.Nullable;
 
 public interface PostRequests {
     @Builder
-    record Create(@NonNull String title, @NonNull String content, @NonNull String boardId, @NonNull String authorUsername) {
+    record Create(@NonNull String title, @NonNull String content, @NonNull String boardId, @NonNull String authorKey) {
         @Builder
-        public record Response(@Nullable PostDTO post, @Nullable CensorResult censorResult, @Nullable String errorMessage) implements Requests.Response {
+        public record Response(@Nullable SecurePostDTO post, @Nullable CensorResult censorResult, @Nullable String errorMessage) implements Requests.Response {
             @Override
             public @Nullable String errorMessage() {
                 return errorMessage != null ? errorMessage : (censorResult == null ? null : (censorResult.isGood() ? null : censorResult.getReason()));
@@ -19,9 +19,9 @@ public interface PostRequests {
     }
 
     @Builder
-    record Comment(long postId, @NonNull String content, @NonNull String authorUsername) {
+    record Comment(long postId, @NonNull String content, @NonNull String authorKey) {
         @Builder
-        public record Response(@Nullable CommentDTO comment, @Nullable CensorResult censorResult, @Nullable String errorMessage) implements Requests.Response {
+        public record Response(@Nullable SecureCommentDTO comment, @Nullable CensorResult censorResult, @Nullable String errorMessage) implements Requests.Response {
             @Override
             public @Nullable String errorMessage() {
                 return errorMessage != null ? errorMessage : (censorResult == null ? null : (censorResult.isGood() ? null : censorResult.getReason()));

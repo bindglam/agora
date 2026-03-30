@@ -9,7 +9,7 @@ public interface UserRequests {
     @Builder
     record Create(@NonNull String username) {
         @Builder
-        public record Response(@Nullable UserDTO user, @Nullable String errorMessage) implements Requests.Response {
+        public record Response(@Nullable DefaultUserDTO user, @Nullable String errorMessage) implements Requests.Response {
         }
     }
 }

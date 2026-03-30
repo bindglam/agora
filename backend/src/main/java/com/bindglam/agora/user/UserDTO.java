@@ -1,22 +1,13 @@
 package com.bindglam.agora.user;
 
-import lombok.Builder;
 import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
 
-@Builder
-public record UserDTO(
-        String username,
-        UserPermission permission,
-        LocalDateTime createdAt
-) {
+public sealed interface UserDTO permits DefaultUserDTO, SecureUserDTO {
+    @NonNull String username();
 
-    public @NonNull User toEntity() {
-        return User.builder()
-                .username(username)
-                .permission(permission)
-                .createdAt(createdAt)
-                .build();
-    }
+    @NonNull UserPermission permission();
+
+    @NonNull LocalDateTime createdAt();
 }

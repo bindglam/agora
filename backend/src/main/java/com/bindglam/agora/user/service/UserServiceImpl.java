@@ -1,7 +1,7 @@
 package com.bindglam.agora.user.service;
 
 import com.bindglam.agora.user.User;
-import com.bindglam.agora.user.UserDTO;
+import com.bindglam.agora.user.DefaultUserDTO;
 import com.bindglam.agora.user.UserPermission;
 import com.bindglam.agora.user.UserRequests;
 import com.bindglam.agora.user.repository.UserRepository;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,13 @@ public final class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public Optional<UserDTO> getUser(@NonNull String username) {
-        return userRepository.findById(username).map(User::toDTO);
+    public Optional<DefaultUserDTO> getUser(@NonNull UUID key) {
+        return userRepository.findById(key).map(User::toDTO);
+    }
+
+    @Override
+    public Optional<DefaultUserDTO> getUser(@NonNull String username) {
+        return userRepository.findByUsername(username).map(User::toDTO);
     }
 
     @Override
