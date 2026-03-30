@@ -7,6 +7,7 @@ import com.bindglam.agora.post.SecurePostDTO;
 import com.bindglam.agora.registry.BuiltInRegistries;
 import com.bindglam.agora.post.service.PostService;
 import com.bindglam.agora.user.DefaultUserDTO;
+import com.bindglam.agora.user.SecureUserDTO;
 import com.bindglam.agora.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public final class PostController {
 
     @GetMapping(value = "/post/{postId}")
     public ResponseEntity<SecurePostDTO> getPost(@RequestParam(name = "user") String userKey, @PathVariable long postId) {
-        DefaultUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
+        SecureUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
         if(user == null)
             return ResponseEntity.notFound().build();
 
@@ -34,7 +35,7 @@ public final class PostController {
 
     @GetMapping(value = "/posts/{boardId}")
     public ResponseEntity<List<SecurePostDTO>> getPosts(@RequestParam(name = "user") String userKey, @PathVariable String boardId, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="size", defaultValue="20") int size) {
-        DefaultUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
+        SecureUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
         if(user == null)
             return ResponseEntity.notFound().build();
 
@@ -52,7 +53,7 @@ public final class PostController {
 
     @GetMapping(value = "/total-posts/{boardId}")
     public ResponseEntity<Integer> getTotalPosts(@RequestParam(name = "user") String userKey, @PathVariable String boardId) {
-        DefaultUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
+        SecureUserDTO user = userService.getUser(UUID.fromString(userKey)).orElse(null);
         if(user == null)
             return ResponseEntity.notFound().build();
 

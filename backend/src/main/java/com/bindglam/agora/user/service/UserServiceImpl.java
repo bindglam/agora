@@ -1,9 +1,6 @@
 package com.bindglam.agora.user.service;
 
-import com.bindglam.agora.user.User;
-import com.bindglam.agora.user.DefaultUserDTO;
-import com.bindglam.agora.user.UserPermission;
-import com.bindglam.agora.user.UserRequests;
+import com.bindglam.agora.user.*;
 import com.bindglam.agora.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -19,18 +16,18 @@ public final class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public Optional<DefaultUserDTO> getUser(@NonNull UUID key) {
+    public Optional<DefaultUserDTO> getUserInternal(@NonNull UUID key) {
         return userRepository.findById(key).map(User::toDTO);
     }
 
     @Override
-    public Optional<DefaultUserDTO> getUser(@NonNull String username) {
-        return userRepository.findByUsername(username).map(User::toDTO);
+    public Optional<SecureUserDTO> getUser(@NonNull UUID key) {
+        return getUserInternal(key).map(DefaultUserDTO::secure);
     }
 
     @Override
     public UserRequests.Create.@NonNull Response createUser(UserRequests.@NonNull Create request) {
-        if(getUser(request.username()).isPresent()) {
+        if(userRepository.findByUsername(request.username()).isPresent()) {
             return UserRequests.Create.Response.builder().errorMessage("동일한 계정이 이미 존재합니다.").build();
         }
 

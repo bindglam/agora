@@ -1,6 +1,6 @@
 package com.bindglam.agora.user.controller;
 
-import com.bindglam.agora.user.DefaultUserDTO;
+import com.bindglam.agora.user.SecureUserDTO;
 import com.bindglam.agora.user.UserRequests;
 import com.bindglam.agora.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public final class UserController {
     private final UserService userService;
 
     @GetMapping(value = "/user/{key}")
-    public ResponseEntity<DefaultUserDTO> getUser(@PathVariable UUID key) {
+    public ResponseEntity<SecureUserDTO> getUser(@PathVariable UUID key) {
         return ResponseEntity.of(userService.getUser(key));
     }
 

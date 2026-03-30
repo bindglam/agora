@@ -6,9 +6,7 @@ import com.bindglam.agora.post.censor.*;
 import com.bindglam.agora.post.repository.CommentRepository;
 import com.bindglam.agora.post.repository.PostRepository;
 import com.bindglam.agora.registry.BuiltInRegistries;
-import com.bindglam.agora.user.User;
-import com.bindglam.agora.user.DefaultUserDTO;
-import com.bindglam.agora.user.UserPermission;
+import com.bindglam.agora.user.*;
 import com.bindglam.agora.user.service.UserService;
 import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.PageRequest;
@@ -41,18 +39,18 @@ public final class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<DefaultPostDTO> getPostInternal(@NonNull DefaultUserDTO user, long postId) {
+    public Optional<DefaultPostDTO> getPostInternal(@NonNull UserDTO user, long postId) {
         return postRepository.findById(postId).map(Post::toDTO)
                 .filter(post -> post.visibility() == PostVisibility.PUBLIC || post.visibility() == PostVisibility.NOT_LISTED || user.permission().check(UserPermission.ADMIN));
     }
 
     @Override
-    public Optional<SecurePostDTO> getPost(@NonNull DefaultUserDTO user, long postId) {
+    public Optional<SecurePostDTO> getPost(@NonNull UserDTO user, long postId) {
         return getPostInternal(user, postId).map(DefaultPostDTO::secure);
     }
 
     @Override
-    public Streamable<SecurePostDTO> getPostsByBoardId(@NonNull DefaultUserDTO user, @NonNull String boardId, int page, int size) {
+    public Streamable<SecurePostDTO> getPostsByBoardId(@NonNull UserDTO user, @NonNull String boardId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return postRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable).map(Post::toDTO).map(DefaultPostDTO::secure)
@@ -60,7 +58,7 @@ public final class PostServiceImpl implements PostService {
     }
 
     @Override
-    public int getTotalPosts(@NonNull DefaultUserDTO user, @NonNull String boardId) {
+    public int getTotalPosts(@NonNull UserDTO user, @NonNull String boardId) {
         int total = postRepository.countByBoardIdAndVisibility(boardId, PostVisibility.PUBLIC);
         if(user.permission() == UserPermission.ADMIN) {
             // TODO : optimization
@@ -77,7 +75,7 @@ public final class PostServiceImpl implements PostService {
         if(board == null)
             return PostRequests.Create.Response.builder().errorMessage("알 수 없는 게시판입니다.").build();
 
-        DefaultUserDTO userDTO = userService.getUser(UUID.fromString(request.authorKey())).orElse(null);
+        DefaultUserDTO userDTO = userService.getUserInternal(UUID.fromString(request.authorKey())).orElse(null);
         if(userDTO == null)
             return PostRequests.Create.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
         User user = userDTO.toEntity();
@@ -115,7 +113,7 @@ public final class PostServiceImpl implements PostService {
 
     @Override
     public PostRequests.Comment.@NonNull Response createComment(PostRequests.@NonNull Comment request) {
-        DefaultUserDTO userDTO = userService.getUser(UUID.fromString(request.authorKey())).orElse(null);
+        DefaultUserDTO userDTO = userService.getUserInternal(UUID.fromString(request.authorKey())).orElse(null);
         if(userDTO == null)
             return PostRequests.Comment.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
         User user = userDTO.toEntity();
