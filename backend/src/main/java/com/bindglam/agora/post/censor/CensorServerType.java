@@ -1,7 +1,7 @@
 package com.bindglam.agora.post.censor;
 
 import com.bindglam.agora.post.censor.server.GeminiServer;
-import com.bindglam.agora.post.censor.server.LocalCensorServer;
+import com.bindglam.agora.post.censor.server.OllamaServer;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public enum CensorServerType {
-    LOCAL(LocalCensorServer::new),
+    OLLAMA(OllamaServer::new),
     GEMINI(GeminiServer::new);
 
     private final Supplier<@NonNull CensorServer> supplier;

@@ -12,7 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-public final class LocalCensorServer extends AIServer {
+public final class OllamaServer extends AIServer {
     private static final URI SERVER_URI = URI.create("http://192.168.0.181:8001/api/chat");
 
     private static final String MODEL_NAME = "nemotron-cascade-2:30b";
