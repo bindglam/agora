@@ -7,7 +7,7 @@ import org.jspecify.annotations.NonNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public sealed interface PostDTO extends Censorable permits DefaultPostDTO, SecurePostDTO {
+public sealed interface PostDTO<T extends CommentDTO<?>> extends Censorable permits DefaultPostDTO, SecurePostDTO {
     @NonNull Long postId();
 
     @NonNull String title();
@@ -22,5 +22,5 @@ public sealed interface PostDTO extends Censorable permits DefaultPostDTO, Secur
 
     @NonNull PostVisibility visibility();
 
-    @NonNull List<? extends CommentDTO> comments();
+    @NonNull List<T> comments();
 }

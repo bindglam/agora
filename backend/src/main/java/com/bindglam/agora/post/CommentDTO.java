@@ -6,7 +6,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDateTime;
 
-public sealed interface CommentDTO extends Censorable permits DefaultCommentDTO, SecureCommentDTO {
+public sealed interface CommentDTO<T extends UserDTO> extends Censorable permits DefaultCommentDTO, SecureCommentDTO {
     @NonNull Long id();
 
     @NonNull String content();
@@ -15,5 +15,5 @@ public sealed interface CommentDTO extends Censorable permits DefaultCommentDTO,
 
     @NonNull Long postId();
 
-    @NonNull UserDTO author();
+    @NonNull T author();
 }

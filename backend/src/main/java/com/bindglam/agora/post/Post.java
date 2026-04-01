@@ -69,7 +69,7 @@ public final class Post implements Censorable {
                 .createdAt(createdAt)
                 .author(author.toDTO())
                 .visibility(visibility)
-                .comments(new ArrayList<>(comments.stream().map(Comment::toDTO).toList()))
+                .comments(comments.stream().map(Comment::toDTO).toList())
                 .build();
     }
 }
