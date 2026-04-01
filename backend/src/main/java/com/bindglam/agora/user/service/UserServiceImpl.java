@@ -16,13 +16,13 @@ public final class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public Optional<DefaultUserDTO> getUserInternal(@NonNull UUID key) {
+    public Optional<DefaultUserDTO> getUnsafeUser(@NonNull UUID key) {
         return userRepository.findById(key).map(User::toDTO);
     }
 
     @Override
     public Optional<SecureUserDTO> getUser(@NonNull UUID key) {
-        return getUserInternal(key).map(DefaultUserDTO::secure);
+        return getUnsafeUser(key).map(DefaultUserDTO::secure);
     }
 
     @Override

@@ -39,31 +39,31 @@ public final class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Optional<DefaultPostDTO> getPostInternal(@NonNull UserDTO user, long postId) {
+    public Optional<DefaultPostDTO> getUnsafePost(@NonNull UserDTO user, long postId) {
         return postRepository.findById(postId).map(Post::toDTO)
                 .filter(post -> post.visibility() == PostVisibility.PUBLIC || post.visibility() == PostVisibility.NOT_LISTED || user.permission().check(UserPermission.ADMIN));
     }
 
     @Override
     public Optional<SecurePostDTO> getPost(@NonNull UserDTO user, long postId) {
-        return getPostInternal(user, postId).map(DefaultPostDTO::secure);
+        return getUnsafePost(user, postId).map(DefaultPostDTO::secure);
     }
 
     @Override
-    public Streamable<SecurePostDTO> getPostsByBoardId(@NonNull UserDTO user, @NonNull String boardId, int page, int size) {
+    public Streamable<SecurePostDTO> getPostsByBoardId(@NonNull UserDTO user, @NonNull Board board, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        return postRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable).map(Post::toDTO).map(DefaultPostDTO::secure)
+        return postRepository.findByBoardIdOrderByCreatedAtDesc(board.id(), pageable).map(Post::toDTO).map(DefaultPostDTO::secure)
                 .filter(post -> post.visibility() == PostVisibility.PUBLIC || user.permission().check(UserPermission.ADMIN));
     }
 
     @Override
-    public int getTotalPosts(@NonNull UserDTO user, @NonNull String boardId) {
-        int total = postRepository.countByBoardIdAndVisibility(boardId, PostVisibility.PUBLIC);
+    public int getTotalPosts(@NonNull UserDTO user, @NonNull Board board) {
+        int total = postRepository.countByBoardIdAndVisibility(board.id(), PostVisibility.PUBLIC);
         if(user.permission() == UserPermission.ADMIN) {
             // TODO : optimization
-            total += postRepository.countByBoardIdAndVisibility(boardId, PostVisibility.PRIVATE)
-                    + postRepository.countByBoardIdAndVisibility(boardId, PostVisibility.NOT_LISTED);
+            total += postRepository.countByBoardIdAndVisibility(board.id(), PostVisibility.PRIVATE)
+                    + postRepository.countByBoardIdAndVisibility(board.id(), PostVisibility.NOT_LISTED);
         }
 
         return total;
@@ -75,7 +75,7 @@ public final class PostServiceImpl implements PostService {
         if(board == null)
             return PostRequests.Create.Response.builder().errorMessage("알 수 없는 게시판입니다.").build();
 
-        DefaultUserDTO userDTO = userService.getUserInternal(UUID.fromString(request.authorKey())).orElse(null);
+        DefaultUserDTO userDTO = userService.getUnsafeUser(UUID.fromString(request.authorKey())).orElse(null);
         if(userDTO == null)
             return PostRequests.Create.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
         User user = userDTO.toEntity();
@@ -113,12 +113,12 @@ public final class PostServiceImpl implements PostService {
 
     @Override
     public PostRequests.Comment.@NonNull Response createComment(PostRequests.@NonNull Comment request) {
-        DefaultUserDTO userDTO = userService.getUserInternal(UUID.fromString(request.authorKey())).orElse(null);
+        DefaultUserDTO userDTO = userService.getUnsafeUser(UUID.fromString(request.authorKey())).orElse(null);
         if(userDTO == null)
             return PostRequests.Comment.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
         User user = userDTO.toEntity();
 
-        Post post = getPostInternal(userDTO, request.postId()).map(DefaultPostDTO::toEntity).orElse(null);
+        Post post = getUnsafePost(userDTO, request.postId()).map(DefaultPostDTO::toEntity).orElse(null);
         if(post == null)
             return PostRequests.Comment.Response.builder().errorMessage("알 수 없는 게시글입니다.").build();
 

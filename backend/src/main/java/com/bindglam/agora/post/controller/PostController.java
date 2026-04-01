@@ -45,7 +45,7 @@ public final class PostController {
         Optional<Board> optional = BuiltInRegistries.BOARDS.get(boardId);
         if(optional.isPresent()) {
             Board board = optional.get();
-            return ResponseEntity.ok(postService.getPostsByBoardId(user, board.id(), page, size).toList());
+            return ResponseEntity.ok(postService.getPostsByBoardId(user, board, page, size).toList());
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -60,7 +60,7 @@ public final class PostController {
         Optional<Board> optional = BuiltInRegistries.BOARDS.get(boardId);
         if(optional.isPresent()) {
             Board board = optional.get();
-            return ResponseEntity.ok(postService.getTotalPosts(user, board.id()));
+            return ResponseEntity.ok(postService.getTotalPosts(user, board));
         } else {
             return ResponseEntity.notFound().build();
         }

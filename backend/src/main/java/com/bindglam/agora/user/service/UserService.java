@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface UserService {
     @Internal
-    Optional<DefaultUserDTO> getUserInternal(@NonNull UUID key);
+    Optional<DefaultUserDTO> getUnsafeUser(@NonNull UUID key);
 
     Optional<SecureUserDTO> getUser(@NonNull UUID key);
 
