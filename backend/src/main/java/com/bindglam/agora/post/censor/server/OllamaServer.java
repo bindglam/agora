@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public final class OllamaServer extends AIServer {
     private static final URI SERVER_URI = URI.create("http://192.168.0.181:8001/api/chat");
 
-    private static final String MODEL_NAME = "nemotron-cascade-2:30b";
+    private static final String MODEL_NAME = "qwen3.5:35b-a3b";
 
     @Override
     public CompletableFuture<CensorResult> tryCensor(Censorable target) {
