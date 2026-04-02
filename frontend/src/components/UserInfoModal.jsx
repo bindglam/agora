@@ -22,16 +22,16 @@ function UserInfoModal({ isOpen, onSubmit }) {
   return (
     <div className="username-modal-overlay">
       <div className="username-modal" onClick={(e) => e.stopPropagation()}>
-        <h2 className="username-modal-title">사용자 이름 입력</h2>
+        <h2 className="username-modal-title">닉네임 입력</h2>
         <p className="username-modal-description">
-          안녕하세요! Agora에 오신 것을 환영합니다. 원활한 커뮤니케이션을 위해 사용자 이름을 입력해주세요.
+          안녕하세요! Agora에 오신 것을 환영합니다. 원활한 커뮤니케이션을 위해 닉네임을 입력해주세요.
         </p>
         <form onSubmit={handleSubmit} className="username-modal-form">
           <input
             type="text"
             value={username}
             onChange={handleChange}
-            placeholder="사용자 이름"
+            placeholder="닉네임"
             className="username-modal-input"
             autoFocus
           />
