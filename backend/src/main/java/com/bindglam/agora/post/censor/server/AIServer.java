@@ -33,6 +33,7 @@ public abstract class AIServer implements CensorServer {
             """;
 
     protected static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_1_1)
             .connectTimeout(Duration.ofSeconds(3))
             .build();
 
