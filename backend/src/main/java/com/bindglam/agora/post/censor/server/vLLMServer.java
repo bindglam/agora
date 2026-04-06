@@ -25,7 +25,7 @@ public final class vLLMServer extends AIServer {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(SERVER_URI)
-                    .POST(HttpRequest.BodyPublishers.ofString(createRequestBody(MODEL_NAME, prompt, 1024, false)))
+                    .POST(HttpRequest.BodyPublishers.ofString(createRequestBody(MODEL_NAME, prompt, 1024, false, false)))
                     .header("Content-Type", "application/json")
                     .build();
 
@@ -53,7 +53,7 @@ public final class vLLMServer extends AIServer {
         });
     }
 
-    private String createRequestBody(String model, String prompt, int maxTokens, boolean stream) {
+    private String createRequestBody(String model, String prompt, int maxTokens, boolean think, boolean stream) {
         JSONObject json = new JSONObject();
         json.put("model", model);
 
@@ -63,9 +63,13 @@ public final class vLLMServer extends AIServer {
         userMessage.put("content", prompt);
         messages.add(userMessage);
 
+        JSONObject chatTemplateKwargs = new JSONObject();
+        chatTemplateKwargs.put("enable_thinking", think);
+
         json.put("messages", messages);
         json.put("max_tokens", maxTokens);
         json.put("stream", stream);
+        json.put("chat_template_kwargs", chatTemplateKwargs);
 
         return json.toJSONString();
     }
