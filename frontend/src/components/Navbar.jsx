@@ -34,6 +34,7 @@ function Navbar() {
           <li><a href="/board/free">자유게시판</a></li>
           {/*<li><a href="/schedule">학급일정</a></li>*/}
           <li><a href="/school">시간표/급식</a></li>
+          <li><a href="/assessments">수행평가</a></li>
         </ul>
       </div>
     </nav>
