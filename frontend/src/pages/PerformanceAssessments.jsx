@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { getPerformanceAssessments, createPerformanceAssessment } from '../api/school';
 import { getCurrentUser, hasPermission, UserPermission } from '../api/user';
-import '../styles/PerformanceAssessments.css';
+import './PerformanceAssessments.css';
 
 function PerformanceAssessments() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -360,7 +361,9 @@ function PerformanceAssessments() {
               {selectedAssessment.description && (
                 <div className="detail-row detail-description">
                   <span className="detail-label">설명</span>
-                  <p className="detail-value">{selectedAssessment.description}</p>
+                  <div className="detail-value markdown-content">
+                    <ReactMarkdown>{selectedAssessment.description}</ReactMarkdown>
+                  </div>
                 </div>
               )}
             </div>

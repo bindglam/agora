@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getTimetable, getMeal } from '../api/school';
-import '../styles/School.css';
+import './School.css';
 
 function School() {
   const [selectedWeek, setSelectedWeek] = useState(null);
