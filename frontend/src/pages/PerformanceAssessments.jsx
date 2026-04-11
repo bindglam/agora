@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
 import { getPerformanceAssessments, createPerformanceAssessment, updatePerformanceAssessment } from '../api/school';
 import { getCurrentUser, hasPermission, UserPermission } from '../api/user';
 import './PerformanceAssessments.css';
@@ -421,8 +420,8 @@ function PerformanceAssessments() {
               {selectedAssessment.description && (
                 <div className="detail-row detail-description">
                   <span className="detail-label">설명</span>
-                  <div className="detail-value markdown-content">
-                    <ReactMarkdown>{selectedAssessment.description}</ReactMarkdown>
+                  <div className="detail-value">
+                    {selectedAssessment.description}
                   </div>
                 </div>
               )}
