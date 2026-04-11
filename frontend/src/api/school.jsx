@@ -44,3 +44,23 @@ export const createPerformanceAssessment = async (subject, title, description, e
   }
   return await responseRaw.json();
 };
+
+export const updatePerformanceAssessment = async (id, subject, title, description, evaluateAt) => {
+  const responseRaw = await fetch(`${API_BASE_URL}/school-api/performance-assessment/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      subject,
+      title,
+      description,
+      evaluateAt,
+      uploaderKey: getUserKeyInCookie()
+    }),
+  });
+  if (!responseRaw.ok) {
+    throw new Error('수행평가를 수정하는데 실패했습니다.');
+  }
+  return await responseRaw.json();
+};

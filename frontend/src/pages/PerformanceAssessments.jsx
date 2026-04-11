@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { getPerformanceAssessments, createPerformanceAssessment } from '../api/school';
+import { getPerformanceAssessments, createPerformanceAssessment, updatePerformanceAssessment } from '../api/school';
 import { getCurrentUser, hasPermission, UserPermission } from '../api/user';
 import './PerformanceAssessments.css';
 
@@ -14,7 +14,9 @@ function PerformanceAssessments() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssessment, setSelectedAssessment] = useState(null);
+  const [editingAssessment, setEditingAssessment] = useState(null);
 
   const [formData, setFormData] = useState({
     subject: '',
@@ -156,6 +158,29 @@ function PerformanceAssessments() {
     setSelectedAssessment(null);
   };
 
+  const openEditModal = (assessment) => {
+    if (!isAdmin()) return;
+    setEditingAssessment(assessment);
+    setFormData({
+      subject: assessment.subject,
+      title: assessment.title,
+      description: assessment.description,
+      evaluateAt: formatDateForDateInput(new Date(assessment.evaluateAt))
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingAssessment(null);
+    setFormData({
+      subject: '',
+      title: '',
+      description: '',
+      evaluateAt: ''
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isAdmin()) {
@@ -173,6 +198,41 @@ function PerformanceAssessments() {
       }
     } catch (err) {
       alert('수행평가 등록에 실패했습니다: ' + err.message);
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (!isAdmin() || !editingAssessment) {
+      alert('권한이 없습니다.');
+      return;
+    }
+
+    try {
+      await updatePerformanceAssessment(
+        editingAssessment.id,
+        formData.subject,
+        formData.title,
+        formData.description,
+        formData.evaluateAt
+      );
+      alert('수행평가가 수정되었습니다.');
+      closeEditModal();
+      loadAssessmentDays();
+      if (selectedDate) {
+        handleDateClick(selectedDate.getDate());
+      }
+      if (selectedAssessment && selectedAssessment.id === editingAssessment.id) {
+        setSelectedAssessment({
+          ...selectedAssessment,
+          subject: formData.subject,
+          title: formData.title,
+          description: formData.description,
+          evaluateAt: formData.evaluateAt
+        });
+      }
+    } catch (err) {
+      alert('수행평가 수정에 실패했습니다: ' + err.message);
     }
   };
 
@@ -366,7 +426,70 @@ function PerformanceAssessments() {
                   </div>
                 </div>
               )}
+              {isAdmin() && (
+                <div className="detail-actions">
+                  <button onClick={() => openEditModal(selectedAssessment)} className="btn-edit">
+                    수정
+                  </button>
+                </div>
+              )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {isEditModalOpen && editingAssessment && (
+        <div className="modal-overlay" onClick={closeEditModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>수행평가 수정</h2>
+              <button onClick={closeEditModal} className="btn-close">&times;</button>
+            </div>
+            <form onSubmit={handleUpdate} className="modal-form">
+              <div className="form-group">
+                <label htmlFor="edit-subject">과목</label>
+                <input
+                  type="text"
+                  id="edit-subject"
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="edit-title">제목</label>
+                <input
+                  type="text"
+                  id="edit-title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="edit-description">설명</label>
+                <textarea
+                  id="edit-description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  rows="4"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="edit-evaluateAt">평가 날짜</label>
+                <input
+                  type="date"
+                  id="edit-evaluateAt"
+                  value={formData.evaluateAt}
+                  onChange={(e) => setFormData({ ...formData, evaluateAt: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-actions">
+                <button type="button" onClick={closeEditModal} className="btn-cancel">취소</button>
+                <button type="submit" className="btn-submit">수정</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
