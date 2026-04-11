@@ -157,4 +157,29 @@ public final class SchoolServiceImpl implements SchoolService {
                 .performanceAssessment(performanceAssessment.toDTO())
                 .build();
     }
+
+    @Override
+    public SchoolRequests.PerformanceAssessment.Edit.@NonNull Response editPerformanceAssessment(long id, SchoolRequests.PerformanceAssessment.@NonNull Edit request) {
+        DefaultUserDTO userDTO = userService.getUnsafeUser(UUID.fromString(request.uploaderKey())).orElse(null);
+        if(userDTO == null)
+            return SchoolRequests.PerformanceAssessment.Edit.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
+        User user = userDTO.toEntity();
+
+        if(!user.getPermission().check(UserPermission.ADMIN))
+            return SchoolRequests.PerformanceAssessment.Edit.Response.builder().errorMessage("권한이 없습니다.").build();
+
+        PerformanceAssessment performanceAssessment = performanceAssessmentRepository.findById(id).orElse(null);
+        if(performanceAssessment == null)
+            return SchoolRequests.PerformanceAssessment.Edit.Response.builder().errorMessage("알 수 없는 수행평가 입니다.").build();
+
+        performanceAssessment.setSubject(request.subject());
+        performanceAssessment.setTitle(request.title());
+        performanceAssessment.setDescription(request.description());
+        performanceAssessment.setEvaluateAt(request.evaluateAt());
+        performanceAssessmentRepository.save(performanceAssessment);
+
+        return SchoolRequests.PerformanceAssessment.Edit.Response.builder()
+                .performanceAssessment(performanceAssessment.toDTO())
+                .build();
+    }
 }

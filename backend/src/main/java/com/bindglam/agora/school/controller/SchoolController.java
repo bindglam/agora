@@ -38,4 +38,9 @@ public final class SchoolController {
     public ResponseEntity<SchoolRequests.PerformanceAssessment.Create.Response> createPerformanceAssessment(@RequestBody SchoolRequests.PerformanceAssessment.Create request) {
         return ResponseEntity.ok(schoolService.createPerformanceAssessment(request));
     }
+
+    @PutMapping(value = "/performance-assessment/{id}")
+    public ResponseEntity<SchoolRequests.PerformanceAssessment.Edit.Response> editPerformanceAssessment(@PathVariable long id, @RequestBody SchoolRequests.PerformanceAssessment.Edit request) {
+        return ResponseEntity.ok(schoolService.editPerformanceAssessment(id, request));
+    }
 }

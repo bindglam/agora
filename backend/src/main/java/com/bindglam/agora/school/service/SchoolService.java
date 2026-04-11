@@ -8,7 +8,6 @@ import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public interface SchoolService {
@@ -19,4 +18,6 @@ public interface SchoolService {
     @NonNull List<PerformanceAssessmentDTO> getPerformanceAssessments(@NonNull LocalDate date);
 
     SchoolRequests.PerformanceAssessment.Create.@NonNull Response createPerformanceAssessment(SchoolRequests.PerformanceAssessment.@NonNull Create request);
+
+    SchoolRequests.PerformanceAssessment.Edit.@NonNull Response editPerformanceAssessment(long id, SchoolRequests.PerformanceAssessment.@NonNull Edit request);
 }

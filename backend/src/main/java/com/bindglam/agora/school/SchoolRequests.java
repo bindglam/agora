@@ -15,5 +15,12 @@ public interface SchoolRequests {
             public record Response(@Nullable PerformanceAssessmentDTO performanceAssessment, @Nullable String errorMessage) implements Requests.Response {
             }
         }
+
+        @Builder
+        record Edit(@NonNull String subject, @NonNull String title, @NonNull String description, @NonNull LocalDate evaluateAt, @NonNull String uploaderKey) {
+            @Builder
+            public record Response(@Nullable PerformanceAssessmentDTO performanceAssessment, @Nullable String errorMessage) implements Requests.Response {
+            }
+        }
     }
 }

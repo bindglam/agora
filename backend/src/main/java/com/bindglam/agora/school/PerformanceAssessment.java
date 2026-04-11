@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PerformanceAssessment {
+public final class PerformanceAssessment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Builder.Default
