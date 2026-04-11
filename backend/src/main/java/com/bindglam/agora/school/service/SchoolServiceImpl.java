@@ -1,11 +1,14 @@
 package com.bindglam.agora.school.service;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.JSONWriter;
-import com.bindglam.agora.school.MealMenu;
-import com.bindglam.agora.school.Timetable;
+import com.bindglam.agora.school.*;
+import com.bindglam.agora.school.repository.PerformanceAssessmentRepository;
+import com.bindglam.agora.user.DefaultUserDTO;
+import com.bindglam.agora.user.User;
+import com.bindglam.agora.user.UserPermission;
+import com.bindglam.agora.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +20,11 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Service
+@RequiredArgsConstructor
 public final class SchoolServiceImpl implements SchoolService {
     private static final String API_BASE_URL = "https://open.neis.go.kr/hub";
     private static final String API_KEY = "299ee3b4aca148c38ccf14cf1a334a6f";
@@ -38,6 +39,10 @@ public final class SchoolServiceImpl implements SchoolService {
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(3))
             .build();
+
+    private final PerformanceAssessmentRepository performanceAssessmentRepository;
+
+    private final UserService userService;
 
     @Override
     public @NonNull CompletableFuture<@NonNull Timetable> getTimetable(@NonNull LocalDate date) {
@@ -122,5 +127,34 @@ public final class SchoolServiceImpl implements SchoolService {
 
             return new MealMenu(meals);
         });
+    }
+
+    @Override
+    public @NonNull List<PerformanceAssessmentDTO> getPerformanceAssessments(@NonNull LocalDate date) {
+        return performanceAssessmentRepository.findAllByEvaluateAt(date).stream().map(PerformanceAssessment::toDTO).toList();
+    }
+
+    @Override
+    public SchoolRequests.PerformanceAssessment.Create.@NonNull Response createPerformanceAssessment(SchoolRequests.PerformanceAssessment.@NonNull Create request) {
+        DefaultUserDTO userDTO = userService.getUnsafeUser(UUID.fromString(request.uploaderKey())).orElse(null);
+        if(userDTO == null)
+            return SchoolRequests.PerformanceAssessment.Create.Response.builder().errorMessage("알 수 없는 유저입니다.").build();
+        User user = userDTO.toEntity();
+
+        if(!user.getPermission().check(UserPermission.ADMIN))
+            return SchoolRequests.PerformanceAssessment.Create.Response.builder().errorMessage("권한이 없습니다.").build();
+
+        PerformanceAssessment performanceAssessment = PerformanceAssessment.builder()
+                .subject(request.subject())
+                .title(request.title())
+                .description(request.description())
+                .evaluateAt(request.evaluateAt())
+                .build();
+
+        performanceAssessment = performanceAssessmentRepository.save(performanceAssessment);
+
+        return SchoolRequests.PerformanceAssessment.Create.Response.builder()
+                .performanceAssessment(performanceAssessment.toDTO())
+                .build();
     }
 }
